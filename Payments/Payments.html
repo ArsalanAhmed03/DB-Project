@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Payment</title>
+<link rel="stylesheet" href="Payments-style.css">
+</head>
+<body>
+
+    <header>
+        <img id = "logo" src="/images/_51248235-4728-4a41-a966-d383c13ce461.png" alt="" width="111" height="110">
+        <h1>Payments</h1>
+    </header>
+
+<main>
+    <section class="payment-form">
+        <h2>Payment Details</h2>
+        <form id="payment-form">
+            <label for="card-number">Card Number:</label>
+            <input type="text" id="card-number" name="card-number" placeholder="Enter your card number" required>
+
+            <label for="expiry-date">Expiry Date:</label>
+            <input type="text" id="expiry-date" name="expiry-date" placeholder="MM/YYYY" required>
+
+            <label for="cvv">CVV:</label>
+            <input type="text" id="cvv" name="cvv" placeholder="Enter CVV" required>
+
+            <label for="cardholder-name">Cardholder Name:</label>
+            <input type="text" id="cardholder-name" name="cardholder-name" placeholder="Enter cardholder name" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+
+            <label for="address">Billing Address:</label>
+            <textarea id="address" name="address" placeholder="Enter your billing address" required></textarea>
+
+            <button type="button" onclick="validateForm()">Pay Now</button>
+        </form>
+    </section>
+</main>
+
+<footer>
+    <p>&copy; 2024 Your Payment Page. All rights reserved.</p>
+</footer>
+
+<script src="scripts.js"></script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family:Arial, Helvetica, sans-serif;
+    background-color: #f2f2f2;
+}
+
+
+main{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+#logo{
+    position: absolute;
+    margin: 0px;
+    left: -20px;
+    top: -20px;
+}
+
+
+header {
+    background-color: #131A22;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+h1 {
+    font-size: 24px;
+}
+
+.product-form {
+    position: absolute;
+    top: 150px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="number"],
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+input[type="file"] {
+    margin-bottom: 15px;
+}
+
+button {
+    background-color: #012330;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #05b5fa;
+}
+
+.product-promotion{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin: 20px;
+}
+
+#ten-per,#twen-per,#thir-per{
+    /* border: 2px solid black; */
+    margin: 10px;
+    padding: 5px;
+}
+
+#ten-per:hover,#twen-per:hover,#thir-per:hover{
+    cursor: pointer;
+}
