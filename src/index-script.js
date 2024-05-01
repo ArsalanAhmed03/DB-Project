@@ -82,3 +82,30 @@ function hide_options(){
     }
 
 }
+
+function movecart(productId){
+    const cart = document.querySelector("#Cart");
+    const linkInsideCart = cart.querySelector("a");
+    cart.style.transform = "translateX(100px)";
+    linkInsideCart.style.color = "rgb(0, 131, 239)";
+        fetch('/addtocart', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ productId: productId })
+        })
+        .then(response => {
+            if (response.ok) {
+                console.log('Product added to cart!');
+            } else {
+                console.error('Failed to add product to cart');
+            }
+        })
+        .catch(error => {
+            console.error('Error adding product to cart:', error);
+        });
+        setTimeout(() => {
+            cart.style.transform = "translateX(0px)";
+        }, 1000);
+}

@@ -64,6 +64,9 @@
             <button class="options" id = "profile">
                 <a href="/profile-setup"><i class="fa-regular fa-user"></i></a>
             </button>
+            <button class="options" id="Cart">
+                <a href="/Cart" style="color: white"><i class="fa-solid fa-cart-shopping fa-lg"></i></a>
+            </button>
         <% } %>   
 
         
@@ -94,13 +97,12 @@
                 <% const product = sectionProducts[0].products[0]; %>
                 <div class="boxes" id="bx1">
                     <h1><%= product.Name %></h1>
-                    <!-- <img src="data:image/jpg;base64,<%= product.product_img %>" alt="<%= product.Name %>" width="150" height="150"> -->
-                    <img id="backdrop" src="/images/P2.jpg" alt="<%= product.Name %>" width="270" height="412">
+                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
                     <p class="price">Price: <%= product.Price %></p>
                     <p class="description"><%= product.short_Description %></p>
                     <div class="buttons">
-                        <button class="add-to-cart">Add to Cart</button>
-                        <button class="add-to-cart">View Details</button>
+                        <button class="add-to-cart" onclick="movecart(<%=product.ProductID%>);">Add to Cart</button>
+                        <button type="button" class="add-to-cart">View Details</button>
                     </div>
                 </div>
             <% } %>
@@ -110,12 +112,11 @@
                 <% const product = sectionProducts[0].products[1]; %>
                 <div class="boxes" id="bx2">
                     <h1><%= product.Name %></h1>
-                    <!-- <img src="/product-images/<%= product.ProductID %>" alt="<%= product.Name %>" width="150" height="150"> -->
-                    <img id="backdrop" src="/images/B1.jpg" alt="<%= product.Name %>" width="270" height="412">
+                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
                     <p class="price">Price: <%= product.Price %></p>
                     <p class="description"><%= product.short_Description %></p>
                     <div class="buttons">
-                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="add-to-cart" onclick="movecart(<%=product.ProductID%>);">Add to Cart</button>
                         <button class="add-to-cart">View Details</button>
                     </div>
                 </div>
@@ -124,12 +125,11 @@
                 <% const product = sectionProducts[0].products[2]; %>
                 <div class="boxes" id="bx3">
                     <h1><%= product.Name %></h1>
-                    <!-- <img src="/product-images/<%= product.ProductID %>" alt="<%= product.Name %>" width="150" height="150"> -->
-                    <img id="backdrop" src="/images/PC1.jpg" alt="<%= product.Name %>" width="270" height="412">
+                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
                     <p class="price">Price: <%= product.Price %></p>
                     <p class="description"><%= product.short_Description %></p>
                     <div class="buttons">
-                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="add-to-cart" onclick="movecart()">Add to Cart</button>
                         <button class="add-to-cart">View Details</button>
                     </div>
                 </div>
@@ -138,12 +138,11 @@
                 <% const product = sectionProducts[0].products[3]; %>
                 <div class="boxes" id="bx4">
                     <h1><%= product.Name %></h1>
-                    <!-- <img src="/product-images/<%= product.ProductID %>" alt="<%= product.Name %>" width="150" height="150"> -->
-                    <img id="backdrop" src="/images/M1.jpg" alt="<%= product.Name %>" width="270" height="412">
+                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
                     <p class="price">Price: <%= product.Price %></p>
                     <p class="description"><%= product.short_Description %></p>
                     <div class="buttons">
-                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="add-to-cart" onclick="movecart()">Add to Cart</button>
                         <button class="add-to-cart">View Details</button>
                     </div>
                 </div>
@@ -159,11 +158,11 @@
                 <% const product = sectionProducts[1].products[0]; %>
                 <div class="boxes" id="bx1">
                     <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="/images/P2.jpg" alt="<%= product.Name %>" width="270" height="412">
+                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
                     <p class="price">Price: <%= product.Price %></p>
                     <p class="description"><%= product.short_Description %></p>
                     <div class="buttons">
-                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="add-to-cart" onclick="movecart()">Add to Cart</button>
                         <button class="add-to-cart">View Details</button>
                     </div>
                 </div>
@@ -172,11 +171,11 @@
                 <% const product = sectionProducts[1].products[1]; %>
                 <div class="boxes" id="bx2">
                     <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="/images/P2.jpg" alt="<%= product.Name %>" width="270" height="412">
+                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
                     <p class="price">Price: <%= product.Price %></p>
                     <p class="description"><%= product.short_Description %></p>
                     <div class="buttons">
-                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="add-to-cart" onclick="movecart()">Add to Cart</button>
                         <button class="add-to-cart">View Details</button>
                     </div>
                 </div>
@@ -185,11 +184,11 @@
                 <% const product = sectionProducts[1].products[2]; %>
                 <div class="boxes" id="bx3">
                     <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="/images/P2.jpg" alt="<%= product.Name %>" width="270" height="412">
+                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
                     <p class="price">Price: <%= product.Price %></p>
                     <p class="description"><%= product.short_Description %></p>
                     <div class="buttons">
-                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="add-to-cart" onclick="movecart()">Add to Cart</button>
                         <button class="add-to-cart">View Details</button>
                     </div>
                 </div>
@@ -198,11 +197,11 @@
                 <% const product = sectionProducts[1].products[3]; %>
                 <div class="boxes" id="bx3">
                     <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="/images/P2.jpg" alt="<%= product.Name %>" width="270" height="412">
+                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
                     <p class="price">Price: <%= product.Price %></p>
                     <p class="description"><%= product.short_Description %></p>
                     <div class="buttons">
-                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="add-to-cart" onclick="movecart()">Add to Cart</button>
                         <button class="add-to-cart">View Details</button>
                     </div>
                 </div>
@@ -217,11 +216,11 @@
                 <% const product = sectionProducts[2].products[0]; %>
                 <div class="boxes" id="bx1">
                     <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="/images/P2.jpg" alt="<%= product.Name %>" width="270" height="412">
+                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
                     <p class="price">Price: <%= product.Price %></p>
                     <p class="description"><%= product.short_Description %></p>
                     <div class="buttons">
-                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="add-to-cart" onclick="movecart()">Add to Cart</button>
                         <button class="add-to-cart">View Details</button>
                     </div>
                 </div>
@@ -230,11 +229,11 @@
                 <% const product = sectionProducts[2].products[1]; %>
                 <div class="boxes" id="bx2">
                     <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="/images/P2.jpg" alt="<%= product.Name %>" width="270" height="412">
+                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
                     <p class="price">Price: <%= product.Price %></p>
                     <p class="description"><%= product.short_Description %></p>
                     <div class="buttons">
-                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="add-to-cart" onclick="movecart()">Add to Cart</button>
                         <button class="add-to-cart">View Details</button>
                     </div>
                 </div>
@@ -243,11 +242,11 @@
                 <% const product = sectionProducts[2].products[2]; %>
                 <div class="boxes" id="bx3">
                     <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="/images/P2.jpg" alt="<%= product.Name %>" width="270" height="412">
+                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
                     <p class="price">Price: <%= product.Price %></p>
                     <p class="description"><%= product.short_Description %></p>
                     <div class="buttons">
-                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="add-to-cart" onclick="movecart()">Add to Cart</button>
                         <button class="add-to-cart">View Details</button>
                     </div>
                 </div>
@@ -256,7 +255,7 @@
                 <% const product = sectionProducts[2].products[3]; %>
                 <div class="boxes" id="bx3">
                     <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="/images/P2.jpg" alt="<%= product.Name %>" width="270" height="412">
+                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
                     <p class="price">Price: <%= product.Price %></p>
                     <p class="description"><%= product.short_Description %></p>
                     <div class="buttons">
@@ -275,7 +274,7 @@
                 <% const product = sectionProducts[3].products[0]; %>
                 <div class="boxes" id="bx1">
                     <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="/images/P2.jpg" alt="<%= product.Name %>" width="270" height="412">
+                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
                     <p class="price">Price: <%= product.Price %></p>
                     <p class="description"><%= product.short_Description %></p>
                     <div class="buttons">
@@ -288,7 +287,7 @@
                 <% const product = sectionProducts[3].products[1]; %>
                 <div class="boxes" id="bx2">
                     <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="/images/P2.jpg" alt="<%= product.Name %>" width="270" height="412">
+                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
                     <p class="price">Price: <%= product.Price %></p>
                     <p class="description"><%= product.short_Description %></p>
                     <div class="buttons">
@@ -301,7 +300,7 @@
                 <% const product = sectionProducts[3].products[2]; %>
                 <div class="boxes" id="bx3">
                     <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="/images/P2.jpg" alt="<%= product.Name %>" width="270" height="412">
+                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
                     <p class="price">Price: <%= product.Price %></p>
                     <p class="description"><%= product.short_Description %></p>
                     <div class="buttons">
@@ -314,7 +313,7 @@
                 <% const product = sectionProducts[3].products[3]; %>
                 <div class="boxes" id="bx3">
                     <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="/images/P2.jpg" alt="<%= product.Name %>" width="270" height="412">
+                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
                     <p class="price">Price: <%= product.Price %></p>
                     <p class="description"><%= product.short_Description %></p>
                     <div class="buttons">
@@ -333,7 +332,7 @@
                 <% const product = sectionProducts[4].products[0]; %>
                 <div class="boxes" id="bx1">
                     <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="/images/P2.jpg" alt="<%= product.Name %>" width="270" height="412">
+                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
                     <p class="price">Price: <%= product.Price %></p>
                     <p class="description"><%= product.short_Description %></p>
                     <div class="buttons">
@@ -346,7 +345,7 @@
                 <% const product = sectionProducts[4].products[1]; %>
                 <div class="boxes" id="bx2">
                     <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="/images/P2.jpg" alt="<%= product.Name %>" width="270" height="412">
+                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
                     <p class="price">Price: <%= product.Price %></p>
                     <p class="description"><%= product.short_Description %></p>
                     <div class="buttons">
@@ -359,7 +358,7 @@
                 <% const product = sectionProducts[4].products[2]; %>
                 <div class="boxes" id="bx3">
                     <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="/images/P2.jpg" alt="<%= product.Name %>" width="270" height="412">
+                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
                     <p class="price">Price: <%= product.Price %></p>
                     <p class="description"><%= product.short_Description %></p>
                     <div class="buttons">
@@ -372,7 +371,7 @@
                 <% const product = sectionProducts[4].products[3]; %>
                 <div class="boxes" id="bx3">
                     <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="/images/P2.jpg" alt="<%= product.Name %>" width="270" height="412">
+                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
                     <p class="price">Price: <%= product.Price %></p>
                     <p class="description"><%= product.short_Description %></p>
                     <div class="buttons">
@@ -391,7 +390,7 @@
                 <% const product = sectionProducts[5].products[0]; %>
                 <div class="boxes" id="bx1">
                     <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="/images/P2.jpg" alt="<%= product.Name %>" width="270" height="412">
+                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
                     <p class="price">Price: <%= product.Price %></p>
                     <p class="description"><%= product.short_Description %></p>
                     <div class="buttons">
@@ -404,7 +403,7 @@
                 <% const product = sectionProducts[5].products[1]; %>
                 <div class="boxes" id="bx2">
                     <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="/images/P2.jpg" alt="<%= product.Name %>" width="270" height="412">
+                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
                     <p class="price">Price: <%= product.Price %></p>
                     <p class="description"><%= product.short_Description %></p>
                     <div class="buttons">
@@ -417,7 +416,7 @@
                 <% const product = sectionProducts[5].products[2]; %>
                 <div class="boxes" id="bx3">
                     <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="/images/P2.jpg" alt="<%= product.Name %>" width="270" height="412">
+                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
                     <p class="price">Price: <%= product.Price %></p>
                     <p class="description"><%= product.short_Description %></p>
                     <div class="buttons">
@@ -430,7 +429,7 @@
                 <% const product = sectionProducts[5].products[3]; %>
                 <div class="boxes" id="bx3">
                     <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="/images/P2.jpg" alt="<%= product.Name %>" width="270" height="412">
+                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
                     <p class="price">Price: <%= product.Price %></p>
                     <p class="description"><%= product.short_Description %></p>
                     <div class="buttons">
@@ -449,7 +448,7 @@
                 <% const product = sectionProducts[6].products[0]; %>
                 <div class="boxes" id="bx1">
                     <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="/images/P2.jpg" alt="<%= product.Name %>" width="270" height="412">
+                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
                     <p class="price">Price: <%= product.Price %></p>
                     <p class="description"><%= product.short_Description %></p>
                     <div class="buttons">
@@ -462,7 +461,7 @@
                 <% const product = sectionProducts[6].products[1]; %>
                 <div class="boxes" id="bx2">
                     <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="/images/P2.jpg" alt="<%= product.Name %>" width="270" height="412">
+                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
                     <p class="price">Price: <%= product.Price %></p>
                     <p class="description"><%= product.short_Description %></p>
                     <div class="buttons">
@@ -475,7 +474,7 @@
                 <% const product = sectionProducts[6].products[2]; %>
                 <div class="boxes" id="bx3">
                     <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="/images/P2.jpg" alt="<%= product.Name %>" width="270" height="412">
+                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
                     <p class="price">Price: <%= product.Price %></p>
                     <p class="description"><%= product.short_Description %></p>
                     <div class="buttons">
@@ -488,7 +487,7 @@
                 <% const product = sectionProducts[6].products[3]; %>
                 <div class="boxes" id="bx3">
                     <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="/images/P2.jpg" alt="<%= product.Name %>" width="270" height="412">
+                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
                     <p class="price">Price: <%= product.Price %></p>
                     <p class="description"><%= product.short_Description %></p>
                     <div class="buttons">
@@ -507,7 +506,7 @@
                 <% const product = sectionProducts[7].products[0]; %>
                 <div class="boxes" id="bx1">
                     <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="/images/P2.jpg" alt="<%= product.Name %>" width="270" height="412">
+                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
                     <p class="price">Price: <%= product.Price %></p>
                     <p class="description"><%= product.short_Description %></p>
                     <div class="buttons">
@@ -520,7 +519,7 @@
                 <% const product = sectionProducts[7].products[1]; %>
                 <div class="boxes" id="bx2">
                     <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="/images/P2.jpg" alt="<%= product.Name %>" width="270" height="412">
+                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
                     <p class="price">Price: <%= product.Price %></p>
                     <p class="description"><%= product.short_Description %></p>
                     <div class="buttons">
@@ -533,7 +532,7 @@
                 <% const product = sectionProducts[7].products[2]; %>
                 <div class="boxes" id="bx3">
                     <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="/images/P2.jpg" alt="<%= product.Name %>" width="270" height="412">
+                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
                     <p class="price">Price: <%= product.Price %></p>
                     <p class="description"><%= product.short_Description %></p>
                     <div class="buttons">
@@ -546,7 +545,7 @@
                 <% const product = sectionProducts[7].products[3]; %>
                 <div class="boxes" id="bx3">
                     <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="/images/P2.jpg" alt="<%= product.Name %>" width="270" height="412">
+                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
                     <p class="price">Price: <%= product.Price %></p>
                     <p class="description"><%= product.short_Description %></p>
                     <div class="buttons">
@@ -565,7 +564,7 @@
                 <% const product = sectionProducts[8].products[0]; %>
                 <div class="boxes" id="bx1">
                     <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="/images/P2.jpg" alt="<%= product.Name %>" width="270" height="412">
+                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
                     <p class="price">Price: <%= product.Price %></p>
                     <p class="description"><%= product.short_Description %></p>
                     <div class="buttons">
@@ -578,7 +577,7 @@
                 <% const product = sectionProducts[8].products[1]; %>
                 <div class="boxes" id="bx2">
                     <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="/images/P2.jpg" alt="<%= product.Name %>" width="270" height="412">
+                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
                     <p class="price">Price: <%= product.Price %></p>
                     <p class="description"><%= product.short_Description %></p>
                     <div class="buttons">
@@ -591,7 +590,7 @@
                 <% const product = sectionProducts[8].products[2]; %>
                 <div class="boxes" id="bx3">
                     <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="/images/P2.jpg" alt="<%= product.Name %>" width="270" height="412">
+                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
                     <p class="price">Price: <%= product.Price %></p>
                     <p class="description"><%= product.short_Description %></p>
                     <div class="buttons">
@@ -604,7 +603,7 @@
                 <% const product = sectionProducts[8].products[3]; %>
                 <div class="boxes" id="bx3">
                     <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="/images/P2.jpg" alt="<%= product.Name %>" width="270" height="412">
+                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
                     <p class="price">Price: <%= product.Price %></p>
                     <p class="description"><%= product.short_Description %></p>
                     <div class="buttons">
@@ -623,7 +622,7 @@
                 <% const product = sectionProducts[9].products[0]; %>
                 <div class="boxes" id="bx1">
                     <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="/images/P2.jpg" alt="<%= product.Name %>" width="270" height="412">
+                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
                     <p class="price">Price: <%= product.Price %></p>
                     <p class="description"><%= product.short_Description %></p>
                     <div class="buttons">
@@ -636,7 +635,7 @@
                 <% const product = sectionProducts[9].products[1]; %>
                 <div class="boxes" id="bx2">
                     <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="/images/P2.jpg" alt="<%= product.Name %>" width="270" height="412">
+                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
                     <p class="price">Price: <%= product.Price %></p>
                     <p class="description"><%= product.short_Description %></p>
                     <div class="buttons">
@@ -649,7 +648,7 @@
                 <% const product = sectionProducts[9].products[2]; %>
                 <div class="boxes" id="bx3">
                     <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="/images/P2.jpg" alt="<%= product.Name %>" width="270" height="412">
+                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
                     <p class="price">Price: <%= product.Price %></p>
                     <p class="description"><%= product.short_Description %></p>
                     <div class="buttons">
@@ -662,7 +661,7 @@
                 <% const product = sectionProducts[9].products[3]; %>
                 <div class="boxes" id="bx3">
                     <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="/images/P2.jpg" alt="<%= product.Name %>" width="270" height="412">
+                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
                     <p class="price">Price: <%= product.Price %></p>
                     <p class="description"><%= product.short_Description %></p>
                     <div class="buttons">

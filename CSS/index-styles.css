@@ -65,12 +65,23 @@ body{
     flex-direction: column;
 }
 
-#profile{
+#profile,#Cart{
     background-color: transparent;
     border: none;
 }
 
-#profile:hover{
+#Cart{
+    left: 5%;
+    padding-top: 3px;
+    transition: all;
+    transition-duration: 1s;
+}
+
+#Cart a{
+    color: rgb(0, 131, 239);
+}
+
+#profile:hover, #Cart:hover{
     background-color: #35353B;
     cursor: pointer;
 }

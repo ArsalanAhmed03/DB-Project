@@ -16,7 +16,7 @@
 
 <main>
 
-    <form action="/addproduct" method="post" class="product-form">
+    <form action="/addproduct" method="post" enctype="multipart/form-data" class="product-form">
         <label for="product-image">Product Image:</label>
         <input type="file" id="product-image" name="productimage" accept="image/*" required>
 
@@ -32,8 +32,6 @@
         <label for="product-description">Description:</label>
         <textarea id="product-long-description" name="productlongdescription" required></textarea>
 
-        <!-- <label for="product-category">Category:</label>
-        <input type="text" id="product-category" name="productcategory" required> -->
         <label for="product-category">Category:</label>
         <select id="product-category" name="productcategory" required>
             <option value="" disabled selected>Select Category</option>

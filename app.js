@@ -1,9 +1,11 @@
 const express = require('express');
 const path = require('path');
+const multer = require("multer");
+const bodyParser = require("body-parser");
 const {error}= require('console');
 const port = 80;
 const cookieParser = require('cookie-parser');
-const fs = require('fs');
+const upload = multer({storage:multer.memoryStorage()});
 
 const {createPool} = require('mysql2');
 
@@ -20,7 +22,7 @@ connectionLimit: 100
 const app = express();
 app.use(cookieParser());
 app.set('view engine', 'ejs');
-
+app.use(bodyParser.json());
 
 // endpoints
 app.use(express.urlencoded({ extended: true }));
@@ -37,13 +39,65 @@ const public_dir = path.join(__dirname,'src');
 
 app.set('views', path.join(__dirname, 'src'));
 
-// app.get('/', (req, res) => {
-//     const loggedIn = req.cookies.SignedIn === 'true';
-//     const isSeller = req.cookies.IS_SELLER === 'true';
-    
-//     res.render('Index', { loggedin: loggedIn ? 'true' : 'false', IS_SELLER: isSeller ? 'true' : 'false' });
-// });
 
+// app.get('/', async (req, res) => {
+//     try {
+//         // Check user login status
+//         const loggedIn = req.cookies.SignedIn === 'true';
+//         const isSeller = req.cookies.IS_SELLER === 'true';
+
+//         const sectionProducts = [];
+
+//         const retreive_data_All = 'SELECT * from Products';
+//         const [products1] = await mysql.promise().query(retreive_data_All);
+
+//         const retreive_data_BS = 'SELECT * from Products ORDER BY totalsales LIMIT 4';
+//         const [products2] = await mysql.promise().query(retreive_data_BS);
+    
+//         const retreive_data_NR = 'SELECT * from Products ORDER BY EntryDate LIMIT 4';
+//         const [products3] = await mysql.promise().query(retreive_data_NR);
+
+//         const retreive_data_Bks = 'SELECT * from Products WHERE Category = "Books"';
+//         const [products4] = await mysql.promise().query(retreive_data_Bks);
+
+//         const retreive_data_HG = 'SELECT * from Products WHERE Category = "Home Garden"';
+//         const [products5] = await mysql.promise().query(retreive_data_HG);
+
+//         const retreive_data_PV = 'SELECT * from Products WHERE Category = "PC & Video Games"';
+//         const [products6] = await mysql.promise().query(retreive_data_PV);
+
+//         const retreive_data_PC = 'SELECT * from Products WHERE Category = "PC"';
+//         const [products7] = await mysql.promise().query(retreive_data_PC);
+
+//         const retreive_data_E = 'SELECT * from Products WHERE Category = "Electronics"';
+//         const [products8] = await mysql.promise().query(retreive_data_E);
+
+//         const retreive_data_TG = 'SELECT * from Products WHERE Category = "Toys & Games"';
+//         const [products9] = await mysql.promise().query(retreive_data_TG);
+
+//         const retreive_data_B = 'SELECT * from Products WHERE Category = "Beauty"';
+//         const [products10] = await mysql.promise().query(retreive_data_B);
+
+//         sectionProducts.push({ section: `Section 1`, products: products1 });
+//         sectionProducts.push({ section: `Section 2`, products: products2 });
+//         sectionProducts.push({ section: `Section 3`, products: products3 });
+//         sectionProducts.push({ section: `Section 4`, products: products4 });
+//         sectionProducts.push({ section: `Section 5`, products: products5 });
+//         sectionProducts.push({ section: `Section 6`, products: products6 });
+//         sectionProducts.push({ section: `Section 7`, products: products7 });
+//         sectionProducts.push({ section: `Section 8`, products: products8 });
+//         sectionProducts.push({ section: `Section 9`, products: products9 });
+//         sectionProducts.push({ section: `Section 10`, products: products10 });
+//         res.render('Index', { 
+//             loggedin: loggedIn ? 'true' : 'false', 
+//             IS_SELLER: isSeller ? 'true' : 'false', 
+//             sectionProducts: sectionProducts 
+//         });
+//     } catch (error) {
+//         console.error('Error retrieving products:', error);
+//         res.status(500).send('Error retrieving products');
+//     }
+// });
 
 app.get('/', async (req, res) => {
     try {
@@ -52,47 +106,24 @@ app.get('/', async (req, res) => {
         const isSeller = req.cookies.IS_SELLER === 'true';
 
         const sectionProducts = [];
+        const categories = [
+            { name: 'All', query: 'SELECT * FROM Products' },
+            { name: 'Best Sellers', query: 'SELECT * FROM Products ORDER BY totalsales LIMIT 4' },
+            { name: 'New Releases', query: 'SELECT * FROM Products ORDER BY EntryDate LIMIT 4' },
+            { name: 'Books', query: 'SELECT * FROM Products WHERE Category = "Books"' },
+            { name: 'Home Garden', query: 'SELECT * FROM Products WHERE Category = "Home Garden"' },
+            { name: 'PC & Video Games', query: 'SELECT * FROM Products WHERE Category = "PC & Video Games"' },
+            { name: 'PC', query: 'SELECT * FROM Products WHERE Category = "PC"' },
+            { name: 'Electronics', query: 'SELECT * FROM Products WHERE Category = "Electronics"' },
+            { name: 'Toys & Games', query: 'SELECT * FROM Products WHERE Category = "Toys & Games"' },
+            { name: 'Beauty', query: 'SELECT * FROM Products WHERE Category = "Beauty"' }
+        ];
 
-        const retreive_data_All = 'SELECT * from Products';
-        const [products1] = await mysql.promise().query(retreive_data_All);
+        for (const category of categories) {
+            const [products] = await mysql.promise().query(category.query);
+            sectionProducts.push({ section: category.name, products: products });
+        }
 
-        const retreive_data_BS = 'SELECT * from Products ORDER BY totalsales LIMIT 4';
-        const [products2] = await mysql.promise().query(retreive_data_BS);
-    
-        const retreive_data_NR = 'SELECT * from Products ORDER BY EntryDate LIMIT 4';
-        const [products3] = await mysql.promise().query(retreive_data_NR);
-
-        const retreive_data_Bks = 'SELECT * from Products WHERE Category = "Books"';
-        const [products4] = await mysql.promise().query(retreive_data_Bks);
-
-        const retreive_data_HG = 'SELECT * from Products WHERE Category = "Home Garden"';
-        const [products5] = await mysql.promise().query(retreive_data_HG);
-
-        const retreive_data_PV = 'SELECT * from Products WHERE Category = "PC & Video Games"';
-        const [products6] = await mysql.promise().query(retreive_data_PV);
-
-        const retreive_data_PC = 'SELECT * from Products WHERE Category = "PC"';
-        const [products7] = await mysql.promise().query(retreive_data_PC);
-
-        const retreive_data_E = 'SELECT * from Products WHERE Category = "Electronics"';
-        const [products8] = await mysql.promise().query(retreive_data_E);
-
-        const retreive_data_TG = 'SELECT * from Products WHERE Category = "Toys & Games"';
-        const [products9] = await mysql.promise().query(retreive_data_TG);
-
-        const retreive_data_B = 'SELECT * from Products WHERE Category = "Beauty"';
-        const [products10] = await mysql.promise().query(retreive_data_B);
-
-        sectionProducts.push({ section: `Section 1`, products: products1 });
-        sectionProducts.push({ section: `Section 2`, products: products2 });
-        sectionProducts.push({ section: `Section 3`, products: products3 });
-        sectionProducts.push({ section: `Section 4`, products: products4 });
-        sectionProducts.push({ section: `Section 5`, products: products5 });
-        sectionProducts.push({ section: `Section 6`, products: products6 });
-        sectionProducts.push({ section: `Section 7`, products: products7 });
-        sectionProducts.push({ section: `Section 8`, products: products8 });
-        sectionProducts.push({ section: `Section 9`, products: products9 });
-        sectionProducts.push({ section: `Section 10`, products: products10 });
         res.render('Index', { 
             loggedin: loggedIn ? 'true' : 'false', 
             IS_SELLER: isSeller ? 'true' : 'false', 
@@ -104,10 +135,6 @@ app.get('/', async (req, res) => {
     }
 });
 
-
-
-
-// res.sendFile('Index.html',{root:public_dir});
 
 app.get('/login',(req,res)=>{
     res.sendFile('Sign-In.html',{root:public_dir});
@@ -414,24 +441,40 @@ app.post('/SellerSignUp',(req,res)=>{
 
 });
 
-app.post('/addproduct', (req,res)=>{
+app.post('/addproduct',upload.single('productimage'),(req,res)=>{
+
+    const requiredFields = ['productname', 'productprice', 'productshortdescription', 'productlongdescription', 'productcategory', 'productquantity'];
+    for (const field of requiredFields) {
+        if (!req.body[field]) {
+            return res.status(400).send(`Missing required field: ${field}`);
+        }
+    }
+
+    if (!req.file) {
+        return res.status(400).send('No product image uploaded');
+    }
+
     const UserID = parseInt(req.cookies.UserId);
-    const product_image = req.body.productimage;
+    const product_image = req.file.buffer.toString('base64');
     const product_name = req.body.productname;
     const product_price = parseFloat(req.body.productprice);
     const product_short_description = req.body.productshortdescription;
     const product_long_description = req.body.productlongdescription;
     const product_category = req.body.productcategory;
     const product_quantity = req.body.productquantity;
-
+    console.log(product_image);
     const find_sellerID = 'select SellerID from Seller where UserId = (?)';
 
     mysql.query(find_sellerID,[UserID],(err,ID)=>{
         const sellerID = parseInt(ID[0]['SellerID']);
         const add_product = 'INSERT INTO Products(product_img,SellerID,Name,short_Description,long_Description,Price,Category,QuantityAvailable) values(?,?,?,?,?,?,?,?)';
         mysql.query(add_product,[product_image,sellerID,product_name,product_short_description,product_long_description,product_price,product_category,product_quantity],(err,final)=>{
+            if (err) {
+                console.error('Error adding product:', err);
+                return res.status(500).send('Error adding product');
+            }
 
-            console.log("Product Added");
+            console.log('Product added successfully');
             res.redirect('/');
         });
     });
@@ -449,3 +492,20 @@ app.post('/gotohome',(req,res)=>{
     res.redirect('/');
 });
 
+app.post('/addtocart',(req,res)=>{
+    const pID = parseInt(req.body.productId);
+    const UserID = parseInt(req.cookies.UserId);
+
+    const add_cart = 'INSERT INTO Cart(ProductID,UserID) VALUES(?,?)';
+
+    mysql.query(add_cart, [pID,UserID], (err,res)=>{
+        if (err) {
+            console.error('Error adding product to cart:', err);
+            return res.status(500).send('Error adding product to cart');
+        }
+
+        console.log('Product added to cart');
+        res.sendStatus(200);
+    })
+
+});
