@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/CSS/profile-setup-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <title>Profile Page</title>
+</head>
+<body>
+
+  <header>
+    <img id="logo" src="/images/_51248235-4728-4a41-a966-d383c13ce461.png" alt="" width="111" height="110">
+    <h1>Profile Setup Page</h1>
+    <form id = "link" method="post" action="/gotohome"><button type="submit"></button></form>
+</header>
+
+    <div class="middle">
+      <div class="btn" onclick="switch_to_info();">
+        <div class="btn-text1">Account Setting</div>
+        <div class="btn-text2">Details about your personal information</div>
+
+      </div>
+      <div class="btn1" onclick="switch_to_password();">
+        <div class="btn-text1">Password and Security</div>
+        <div class="btn-text2">Details about your Security</div>
+      </div>
+      <% if (IS_SELLER === 'true'){ %>
+      <div class="btn2" onclick="switch_to_seller();">
+        <div class="btn-text1">Seller</div>
+        <div class="btn-text2">Who is selling</div>
+      </div>
+      <form class="btn3" method="post" action="/AddProduct">
+        <div class="btn-text1">Add Products</div>
+        <div class="btn-text2">Fill your inventory </div>
+        <!-- <button id="btn4" type="submit"></button> -->
+      </form>
+      <%}%>
+
+    </div>
+    
+    <div class="right">
+        <div class="r-circle"></div>
+        <p>Upload a New Photo</p>
+    </div>
+
+    <form action="/changes" method="post" class="right-main" style="left: 51%">
+      <h1>Change User information here</h1>
+
+      <div class="rm-text1">
+        Full name*
+      </div>
+
+      <input name="name" type="text" id="FN" placeholder="Name">
+
+      <div class="rm-text2">
+        Phone Number*
+      </div>
+      
+      <input name="PHN" type="text" id="EA" placeholder="Phone Number">
+
+      <div class="rm-text3">
+        Address*
+      </div>
+
+      <input name="Address" type="text" id="AD" placeholder="Current Address">
+
+      <div class="rm-text4">
+        Country
+      </div>
+
+      <input name="Country" type="text" id="CT" placeholder="Country">
+      
+      <button type="submit" class="con-btn">Update Information</button>
+
+    </form>
+
+    <form action="/changesP" method="post" class="right-main-pass" style="left: -51%">
+      
+    <h1>Change User Password here</h1>
+
+    <p>Enter Previous Password</p>
+    <input name="OldPassword" type="text" class="OldPassword" id="OP" placeholder="Old Password">
+
+    <p>Enter New Password</p>
+    <input name="NewPassword" type="text" class="NewPassword" id="NP" placeholder="New Password">
+      
+    <button type="submit" class="upd-pass-btn">Update Password</button>
+
+    </form>
+
+    <form action="/changesS" method="post" class="right-main-seller" style="left: -51%">
+      
+      <h1>Add seller details here</h1>
+  
+      <p>Enter New Shop Name</p>
+      <input name="OldPassword" type="text" class="OldPassword" id="OP" placeholder="Shop Name">
+  
+      <p>Enter New WareHouse Address</p>
+      <input name="NewPassword" type="text" class="NewPassword" id="NP" placeholder="New WareHouse Address">
+        
+      <button type="submit" class="upd-pass-btn">Update Seller details</button>
+  
+      </form>
+
+    <script>
+      function switch_to_info(){
+        const req_div_info = document.querySelector(".right-main");
+        const req_div_password = document.querySelector(".right-main-pass");
+        const req_div_seller = document.querySelector(".right-main-seller");
+        req_div_info.style.left = '51%';
+        req_div_password.style.left = '-51%';
+        req_div_seller.style.left = '-51%';
+      }
+
+      function switch_to_password(){
+        const req_div_info = document.querySelector(".right-main");
+        const req_div_password = document.querySelector(".right-main-pass");
+        const req_div_seller = document.querySelector(".right-main-seller");
+        req_div_info.style.left = '-51%';
+        req_div_password.style.left = '51%';
+        req_div_seller.style.left = '-51%';
+      }
+
+      function switch_to_seller(){
+        const req_div_info = document.querySelector(".right-main");
+        const req_div_password = document.querySelector(".right-main-pass");
+        const req_div_seller = document.querySelector(".right-main-seller");
+        req_div_info.style.left = '-51%';
+        req_div_password.style.left = '-51%';
+        req_div_seller.style.left = '51%';
+      }
+    </script>
+</body>
+</html>

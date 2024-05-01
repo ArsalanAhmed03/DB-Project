@@ -1,0 +1,94 @@
+
+@font-face {
+    font-family: 'google font';
+    src: url('/fonts/Product\ Sans\ Regular.ttf') format('truetype');
+    /* You can include additional font formats like woff, woff2, eot, svg if needed */
+}
+
+@font-face {
+    font-family: 'google font bold';
+    src: url('/fonts/Product\ Sans\ Bold.ttf') format('truetype');
+    /* You can include additional font formats like woff, woff2, eot, svg if needed */
+}
+
+body{
+    margin: 0px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.signup-box{
+    position: absolute;
+    width: 40%;
+    height: 550px;
+    top: 10%;
+    border: 2px solid rgba(0, 0, 0, 0.427);
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+#front-logo{
+    position: absolute;
+    width: 250px;
+    height: 250px;
+    margin-top: -85%;
+}
+
+.PM_logo{
+    font-family:sans-serif;
+    display: flex;
+    font-weight:500;
+    opacity: 100%;
+    font-size: x-large;
+    justify-content: center;
+    font-family: 'google font';
+    position: absolute;
+    top: 25%;
+}
+
+input{
+    margin-top: 15px;
+    width: 60%;
+    height: 30px;
+    padding-left: 10px;
+    border-radius: 5px;
+    border: 1px solid black;
+}
+
+.clear-btn,.Next-btn{
+    background-color:rgb(49 121 255);
+    position: absolute;
+    border: 1px solid white;
+    width: 90px;
+    height: 30px;
+    bottom: 10%;
+    border-radius: 5px;
+    color: white;
+    
+}
+
+.clear-btn{
+    left: 15%;
+    color: black;
+    background-color: transparent;
+}
+
+.Next-btn{
+    right: 15%;
+    transition: all;
+    transition-duration: 0.3s;
+}
+
+.Next-btn a{
+    text-decoration: none;
+    color: white;
+}
+
+.Next-btn:hover{
+    transform: scale(1.07);
+}
+
