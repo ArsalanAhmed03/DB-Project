@@ -109,3 +109,55 @@ function movecart(productId){
             cart.style.transform = "translateX(0px)";
         }, 1000);
 }
+
+function add_favourite(productId, emptyid, fullid){
+    const empty_computedStyle = window.getComputedStyle(emptyid);
+    const full_computedStyle = window.getComputedStyle(fullid);
+    const empty_propertyValue = empty_computedStyle.getPropertyValue('display');
+    const full_propertyValue = full_computedStyle.getPropertyValue('display');
+
+    if(empty_propertyValue === 'block'){
+        emptyid.style.display = 'none';
+        fullid.style.display = 'block';
+        fetch('/add_favourite', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ productId: productId })
+        })
+        .then(response => {
+            if (response.ok) {
+                console.log('Product added to favourite!');
+            } else {
+                console.error('Failed to add product to favourite');
+            }
+        })
+        .catch(error => {
+            console.error('Error adding product to favourite:', error);
+        });
+    }
+    else{
+        emptyid.style.display = 'block';
+        fullid.style.display = 'none';
+        fetch('/remove_favourite', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ productId: productId })
+        })
+        .then(response => {
+            if (response.ok) {
+                console.log('Product removed from favourite!');
+            } else {
+                console.error('Failed to remove product from favourite');
+            }
+        })
+        .catch(error => {
+            console.error('Error removing product from favourite:', error);
+        });
+    }
+
+    
+}

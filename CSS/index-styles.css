@@ -81,6 +81,17 @@ body{
     color: rgb(0, 131, 239);
 }
 
+#fav{
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 10px;
+    right: 5%;
+}
+
 #profile:hover, #Cart:hover{
     background-color: #35353B;
     cursor: pointer;
@@ -680,6 +691,7 @@ body{
     flex-direction: column;
     text-align: center;
     color: white;
+    position: relative;
     /* border: 2px solid rgba(255, 255, 255, 0.17); */
 
 }

@@ -39,69 +39,8 @@ const public_dir = path.join(__dirname,'src');
 
 app.set('views', path.join(__dirname, 'src'));
 
-
-// app.get('/', async (req, res) => {
-//     try {
-//         // Check user login status
-//         const loggedIn = req.cookies.SignedIn === 'true';
-//         const isSeller = req.cookies.IS_SELLER === 'true';
-
-//         const sectionProducts = [];
-
-//         const retreive_data_All = 'SELECT * from Products';
-//         const [products1] = await mysql.promise().query(retreive_data_All);
-
-//         const retreive_data_BS = 'SELECT * from Products ORDER BY totalsales LIMIT 4';
-//         const [products2] = await mysql.promise().query(retreive_data_BS);
-    
-//         const retreive_data_NR = 'SELECT * from Products ORDER BY EntryDate LIMIT 4';
-//         const [products3] = await mysql.promise().query(retreive_data_NR);
-
-//         const retreive_data_Bks = 'SELECT * from Products WHERE Category = "Books"';
-//         const [products4] = await mysql.promise().query(retreive_data_Bks);
-
-//         const retreive_data_HG = 'SELECT * from Products WHERE Category = "Home Garden"';
-//         const [products5] = await mysql.promise().query(retreive_data_HG);
-
-//         const retreive_data_PV = 'SELECT * from Products WHERE Category = "PC & Video Games"';
-//         const [products6] = await mysql.promise().query(retreive_data_PV);
-
-//         const retreive_data_PC = 'SELECT * from Products WHERE Category = "PC"';
-//         const [products7] = await mysql.promise().query(retreive_data_PC);
-
-//         const retreive_data_E = 'SELECT * from Products WHERE Category = "Electronics"';
-//         const [products8] = await mysql.promise().query(retreive_data_E);
-
-//         const retreive_data_TG = 'SELECT * from Products WHERE Category = "Toys & Games"';
-//         const [products9] = await mysql.promise().query(retreive_data_TG);
-
-//         const retreive_data_B = 'SELECT * from Products WHERE Category = "Beauty"';
-//         const [products10] = await mysql.promise().query(retreive_data_B);
-
-//         sectionProducts.push({ section: `Section 1`, products: products1 });
-//         sectionProducts.push({ section: `Section 2`, products: products2 });
-//         sectionProducts.push({ section: `Section 3`, products: products3 });
-//         sectionProducts.push({ section: `Section 4`, products: products4 });
-//         sectionProducts.push({ section: `Section 5`, products: products5 });
-//         sectionProducts.push({ section: `Section 6`, products: products6 });
-//         sectionProducts.push({ section: `Section 7`, products: products7 });
-//         sectionProducts.push({ section: `Section 8`, products: products8 });
-//         sectionProducts.push({ section: `Section 9`, products: products9 });
-//         sectionProducts.push({ section: `Section 10`, products: products10 });
-//         res.render('Index', { 
-//             loggedin: loggedIn ? 'true' : 'false', 
-//             IS_SELLER: isSeller ? 'true' : 'false', 
-//             sectionProducts: sectionProducts 
-//         });
-//     } catch (error) {
-//         console.error('Error retrieving products:', error);
-//         res.status(500).send('Error retrieving products');
-//     }
-// });
-
 app.get('/', async (req, res) => {
     try {
-        // Check user login status
         const loggedIn = req.cookies.SignedIn === 'true';
         const isSeller = req.cookies.IS_SELLER === 'true';
 
@@ -161,7 +100,8 @@ app.get('/product-listing',(req,res)=>{
 })
 
 app.get('/Cart',(req,res)=>{
-    res.sendFile('Cart.html',{root:public_dir});
+    // res.sendFile('Cart.html',{root:public_dir});
+    res.render('Cart');
 })
 
 app.get('/profile-setup',(req,res)=>{
@@ -496,16 +436,247 @@ app.post('/addtocart',(req,res)=>{
     const pID = parseInt(req.body.productId);
     const UserID = parseInt(req.cookies.UserId);
 
-    const add_cart = 'INSERT INTO Cart(ProductID,UserID) VALUES(?,?)';
+    const check_cart = 'select quantity from Cart where ProductID = ? AND UserID = ?';
 
-    mysql.query(add_cart, [pID,UserID], (err,res)=>{
-        if (err) {
-            console.error('Error adding product to cart:', err);
-            return res.status(500).send('Error adding product to cart');
+    mysql.query(check_cart,[pID,UserID],(err1,p_quantity)=>{
+        if(err1){
+            console.error(err1);
+        }
+        else{
+            if(p_quantity.length < 1){
+                const add_cart = 'INSERT INTO Cart(ProductID,UserID,quantity) VALUES(?,?,?)';
+                mysql.query(add_cart, [pID,UserID,1], (err2,res)=>{
+                    if (err2) {
+                        console.error('Error adding product to cart:', err);
+                    }
+                });
+            }
+            else{
+                const update_item = 'update Cart set quantity = ? where ProductID = ?';
+                mysql.query(update_item,[p_quantity[0].quantity + 1,pID],(err3,final)=>{
+                    if(err3){
+                        console.error(err3);
+                    }
+                })
+            }
+        }
+});
+
+
+});
+
+// app.post('/add_favourite',(req,res)=>{
+//     const pID = parseInt(req.body.productId);
+//     const UserID = parseInt(req.cookies.UserId);
+//     console.log(pID);
+//     const check_favourite = 'select UserID,ProductID from WishList_U as U JOIN WishList_P as P ON U.WishListID = P.WishlistID WHERE UserID = ? AND ProductID = ?;';
+
+//     mysql.query(check_favourite,[UserID,pID],(err1,returnval)=>{
+//         if(err1){
+//             console.log("error1");
+//         }
+//         else{
+//             if(returnval.length < 0){
+//                 console.log("Item already in favourite for this user");
+//             }
+//             else{
+//                 const check_user = 'select WishListID from WishList_U where UserID = ?';
+//                 mysql.query(check_user,[UserID],(err2,user_found)=>{
+//                     if(err2){
+//                         console.log(error2);
+//                     }
+//                     else{
+//                         if(user_found.length > 0){
+//                             const insert_item = 'INSERT INTO WishList_P(ProductID,WishListID)values(?,?)';
+//                                 mysql.query(insert_item,[pID,user_found[0].WishListID],(err6,added)=>{
+//                                     if(err6){
+//                                     console.log("error6");
+//                                     }
+//                         });
+//                         }   
+//                         else{
+//                             const add_user = 'INSERT INTO WishList_U(UserID)values(?)';
+//                             mysql.query(add_user,[UserID],(err3,added)=>{
+//                                 if(err3){
+//                                     console.log("error3");
+//                                 }
+//                                 else{
+//                                     console.log('User Added');
+//                                     const get_WishID = 'select WishListID from WishList_U where UserID = ?';
+//                                     mysql.query(get_WishID,[UserID],(err4,wishID)=>{
+//                                         if(err4){
+//                                             console.log("error4");
+//                                         }
+//                                         else{
+//                                             const insert_item = 'INSERT INTO WishList_P(ProductID,WishListID)values(?,?)';
+//                                             mysql.query(insert_item,[pID,wishID[0].WishListID],(err5,added)=>{
+//                                                 if(err5){
+//                                                 console.log("error5");
+//                                                 }
+//                                             });  
+//                                         }
+//                                     })
+//                                 }
+//                             })
+//                         }
+                        
+//                     }
+//                 });
+//             }
+//         }
+
+//     });
+
+// });
+
+// app.post('/remove_favourite',(req,res)=>{
+//     const pID = parseInt(req.body.productId);
+//     const UserID = parseInt(req.cookies.UserId);
+    
+//     const check_favourite = 'select WishListID from WishList_U where UserID = ?';
+
+//     mysql.query(check_favourite,[UserID],(err1,wishID)=>{
+//         if(err1){
+//             console.log("err1");
+//         }
+//         else{
+//             const remove_P = 'delete from WishList_P where WishListID = ? AND ProductID = ?'
+//             mysql.query(remove_P,[wishID[0].WishListID,pID],(err2,rem)=>{
+//                 if(err2){
+//                     console.log("err2");
+//                 }
+//                 else{
+//                     const check_P = 'select * from WishList_P where WishListID = ?'
+//                     mysql.query(check_P,[wishID[0].WishListID],(err3,rem)=>{
+//                     if(err3){
+//                     console.log("err3");
+//                     }
+//                     else{
+//                         if(rem.length < 1){
+//                             const remove_P = 'delete from WishList_U where UserID = ?'
+//                             mysql.query(remove_P,[UserID],(err4,final)=>{
+//                                 if(err4){
+//                                     console.log("err4");
+//                                 }
+//                             });
+//                         }
+//                     }
+//                 });
+//             }
+//         });
+//     }
+// });
+
+// });
+
+app.post('/add_favourite', (req, res) => {
+    const pID = parseInt(req.body.productId);
+    const UserID = parseInt(req.cookies.UserId);
+
+    const check_favourite = 'SELECT WishListID FROM WishList_U WHERE UserID = ?';
+
+    mysql.query(check_favourite, [UserID], (err1, userFound) => {
+        if (err1) {
+            console.log("Error querying user's wishlist:", err1);
+            return;
         }
 
-        console.log('Product added to cart');
-        res.sendStatus(200);
-    })
+        const wishListID = userFound[0]?.WishListID;
 
+        if (wishListID) {
+            checkAndInsertProduct(pID, wishListID);
+        } else {
+            addNewUserAndProduct(UserID, pID);
+        }
+    });
+
+    function checkAndInsertProduct(productID, wishlistID) {
+        const checkProduct = 'SELECT * FROM WishList_P WHERE WishListID = ? AND ProductID = ?';
+
+        mysql.query(checkProduct, [wishlistID, productID], (err2, result) => {
+            if (err2) {
+                console.log("Error querying product in wishlist:", err2);
+                return;
+            }
+
+            if (result.length === 0) {
+                insertProduct(productID, wishlistID);
+            } else {
+                console.log("Item already in favourites for this user");
+            }
+        });
+    }
+
+    function insertProduct(productID, wishlistID) {
+        const insertItem = 'INSERT INTO WishList_P (ProductID, WishListID) VALUES (?, ?)';
+
+        mysql.query(insertItem, [productID, wishlistID], (err3, added) => {
+            if (err3) {
+                console.log("Error adding product to wishlist:", err3);
+            }
+        });
+    }
+
+    function addNewUserAndProduct(userID, productID) {
+        const addUser = 'INSERT INTO WishList_U (UserID) VALUES (?)';
+
+        mysql.query(addUser, [userID], (err4, addedUser) => {
+            if (err4) {
+                console.log("Error adding user:", err4);
+                return;
+            }
+
+            const newWishListID = addedUser.insertId;
+            insertProduct(productID, newWishListID);
+        });
+    }
+});
+
+app.post('/remove_favourite', (req, res) => {
+    const pID = parseInt(req.body.productId);
+    const UserID = parseInt(req.cookies.UserId);
+
+    const checkWishList = 'SELECT WishListID FROM WishList_U WHERE UserID = ?';
+
+    mysql.query(checkWishList, [UserID], (err1, result) => {
+        if (err1) {
+            console.log("Error querying wishlist:", err1);
+            return;
+        }
+
+        const wishListID = result[0]?.WishListID;
+
+        if (!wishListID) {
+            console.log("User's wishlist not found");
+            return;
+        }
+
+        const removeProduct = 'DELETE FROM WishList_P WHERE WishListID = ? AND ProductID = ?';
+
+        mysql.query(removeProduct, [wishListID, pID], (err2, result) => {
+            if (err2) {
+                console.log("Error removing product from wishlist:", err2);
+                return;
+            }
+
+            const checkProducts = 'SELECT * FROM WishList_P WHERE WishListID = ?';
+
+            mysql.query(checkProducts, [wishListID], (err3, result) => {
+                if (err3) {
+                    console.log("Error querying products in wishlist:", err3);
+                    return;
+                }
+
+                if (result.length === 0) {
+                    const removeUser = 'DELETE FROM WishList_U WHERE UserID = ?';
+
+                    mysql.query(removeUser, [UserID], (err4, result) => {
+                        if (err4) {
+                            console.log("Error removing user from wishlist:", err4);
+                        }
+                    });
+                }
+            });
+        });
+    });
 });
