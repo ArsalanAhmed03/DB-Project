@@ -83,7 +83,8 @@ function hide_options(){
 
 }
 
-function movecart(productId){
+function movecart(pID){
+    const productId = pID;
     const cart = document.querySelector("#Cart");
     const linkInsideCart = cart.querySelector("a");
     cart.style.transform = "translateX(100px)";
@@ -110,15 +111,17 @@ function movecart(productId){
         }, 1000);
 }
 
-function add_favourite(productId, emptyid, fullid){
-    const empty_computedStyle = window.getComputedStyle(emptyid);
-    const full_computedStyle = window.getComputedStyle(fullid);
+function add_favourite(pID, emptyid, fullid){
+    const productId = parseInt(pID);
+    console.log(emptyid);
+    const empty = document.querySelector(emptyid);
+    const full = document.querySelector(fullid);
+    console.log(empty);
+    const empty_computedStyle = window.getComputedStyle(empty);
     const empty_propertyValue = empty_computedStyle.getPropertyValue('display');
-    const full_propertyValue = full_computedStyle.getPropertyValue('display');
-
     if(empty_propertyValue === 'block'){
-        emptyid.style.display = 'none';
-        fullid.style.display = 'block';
+        empty.style.display = 'none';
+        full.style.display = 'block';
         fetch('/add_favourite', {
             method: 'POST',
             headers: {
@@ -138,8 +141,8 @@ function add_favourite(productId, emptyid, fullid){
         });
     }
     else{
-        emptyid.style.display = 'block';
-        fullid.style.display = 'none';
+        empty.style.display = 'block';
+        full.style.display = 'none';
         fetch('/remove_favourite', {
             method: 'POST',
             headers: {

@@ -88,65 +88,31 @@
         <div id="slider"></div>
     </div>
 
+<%const renderProducts = (sectionIndex) => {%>
+    <%const products = sectionProducts[sectionIndex].products;%>
+    <%for (let i = 0; i < products.length; i++) {%>
+        <%const product = products[i];%>
+        <div class="boxes" id="bx<%= i + 1 %>">
+            <h1><%= product.Name %></h1>
+            <img id="backdrop" src="data:image/png;base64,<%= product.product_img %>" alt="<%= product.Name %>" width="270" height="412">
+            <p class="price">Price: <%= product.Price %></p>
+            <p class="description"><%= product.short_Description %></p>
+            <button id="fav" onclick="add_favourite('<%= product.ProductID %>', '#empty0<%= i %>', '#full0<%= i %>')"> 
+                <i class="fa-solid fa-star fa-lg" id="full0<%= i %>" style="display: none;"></i>
+                <i class="fa-regular fa-star fa-lg" id="empty0<%= i %>" style="display: block;"></i>
+            </button>
+            <div class="buttons">
+                <button class="add-to-cart" onclick="movecart('<%= product.ProductID %>');">Add to Cart</button>
+                <button type="button" class="add-to-cart">View Details</button>
+            </div>
+        </div>
+<% } %>
+<% } %>
+
     <div class="main-body">
         <img id = "front-logo" src="/images/_51248235-4728-4a41-a966-d383c13ce461.png" alt="">
         <div class="All-row">
-            <% if (sectionProducts[0].products.length > 0) { %>
-                <% const product = sectionProducts[0].products[0]; %>
-                <div class="boxes" id="bx1">
-                    <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
-                    <p class="price">Price: <%= product.Price %></p>
-                    <p class="description"><%= product.short_Description %></p>
-                    <button id="fav" onclick="add_favourite(<%=product.ProductID%>,empty00,full00)"><i class="fa-solid fa-star fa-lg" id = "full00" style="display: none;"></i><i class="fa-regular fa-star fa-lg" id = "empty00" style="display: block;"></i></button>
-
-                    <div class="buttons">
-                        <button class="add-to-cart" onclick="movecart(<%=product.ProductID%>);">Add to Cart</button>
-                        <button type="button" class="add-to-cart">View Details</button>
-                    </div>
-                </div>
-            <% } %>
-            <% if (sectionProducts[0].products.length > 1) { %>
-                <% const product = sectionProducts[0].products[1]; %>
-                <div class="boxes" id="bx2">
-                    <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
-                    <p class="price">Price: <%= product.Price %></p>
-                    <p class="description"><%= product.short_Description %></p>
-                    <button id="fav" onclick="add_favourite(<%=product.ProductID%>,empty01,full01)"><i class="fa-solid fa-star fa-lg" id = "full01" style="display: none;"></i><i class="fa-regular fa-star fa-lg" id = "empty01" style="display: block;"></i></button>
-
-                    <div class="buttons">
-                        <button class="add-to-cart" onclick="movecart(<%=product.ProductID%>);">Add to Cart</button>
-                        <button type="button" class="add-to-cart">View Details</button>
-                    </div>
-                </div>
-            <% } %>
-            <% if (sectionProducts[0].products.length > 2) { %>
-                <% const product = sectionProducts[0].products[2]; %>
-                <div class="boxes" id="bx3">
-                    <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
-                    <p class="price">Price: <%= product.Price %></p>
-                    <p class="description"><%= product.short_Description %></p>
-                    <div class="buttons">
-                        <button class="add-to-cart" onclick="movecart()">Add to Cart</button>
-                        <button class="add-to-cart">View Details</button>
-                    </div>
-                </div>
-            <% } %>
-            <% if (sectionProducts[0].products.length > 3) { %>
-                <% const product = sectionProducts[0].products[3]; %>
-                <div class="boxes" id="bx4">
-                    <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
-                    <p class="price">Price: <%= product.Price %></p>
-                    <p class="description"><%= product.short_Description %></p>
-                    <div class="buttons">
-                        <button class="add-to-cart" onclick="movecart()">Add to Cart</button>
-                        <button class="add-to-cart">View Details</button>
-                    </div>
-                </div>
-            <% } %>
+            <%= renderProducts(0) %>
         </div>
         <div class="white-line">
         </div>
@@ -154,523 +120,55 @@
 
     <div class="BS">
         <div class="BS-row">
-            <% if (sectionProducts[1] && sectionProducts[1].products.length > 0) { %>
-                <% const product = sectionProducts[1].products[0]; %>
-                <div class="boxes" id="bx1">
-                    <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
-                    <p class="price">Price: <%= product.Price %></p>
-                    <p class="description"><%= product.short_Description %></p>
-                    <div class="buttons">
-                        <button class="add-to-cart" onclick="movecart()">Add to Cart</button>
-                        <button class="add-to-cart">View Details</button>
-                    </div>
-                </div>
-            <% } %>
-            <% if (sectionProducts[1] && sectionProducts[1].products.length > 1) { %>
-                <% const product = sectionProducts[1].products[1]; %>
-                <div class="boxes" id="bx2">
-                    <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
-                    <p class="price">Price: <%= product.Price %></p>
-                    <p class="description"><%= product.short_Description %></p>
-                    <div class="buttons">
-                        <button class="add-to-cart" onclick="movecart()">Add to Cart</button>
-                        <button class="add-to-cart">View Details</button>
-                    </div>
-                </div>
-            <% } %>
-            <% if (sectionProducts[1] && sectionProducts[1].products.length > 2) { %>
-                <% const product = sectionProducts[1].products[2]; %>
-                <div class="boxes" id="bx3">
-                    <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
-                    <p class="price">Price: <%= product.Price %></p>
-                    <p class="description"><%= product.short_Description %></p>
-                    <div class="buttons">
-                        <button class="add-to-cart" onclick="movecart()">Add to Cart</button>
-                        <button class="add-to-cart">View Details</button>
-                    </div>
-                </div>
-            <% } %>
-            <% if (sectionProducts[1] && sectionProducts[1].products.length > 3) { %>
-                <% const product = sectionProducts[1].products[3]; %>
-                <div class="boxes" id="bx3">
-                    <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
-                    <p class="price">Price: <%= product.Price %></p>
-                    <p class="description"><%= product.short_Description %></p>
-                    <div class="buttons">
-                        <button class="add-to-cart" onclick="movecart()">Add to Cart</button>
-                        <button class="add-to-cart">View Details</button>
-                    </div>
-                </div>
-            <% } %>
-
+            <%= renderProducts(1) %>
         </div>
     </div>
 
     <div class="NR">
         <div class="NR-row">
-            <% if (sectionProducts[2] && sectionProducts[1].products.length > 0) { %>
-                <% const product = sectionProducts[2].products[0]; %>
-                <div class="boxes" id="bx1">
-                    <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
-                    <p class="price">Price: <%= product.Price %></p>
-                    <p class="description"><%= product.short_Description %></p>
-                    <div class="buttons">
-                        <button class="add-to-cart" onclick="movecart()">Add to Cart</button>
-                        <button class="add-to-cart">View Details</button>
-                    </div>
-                </div>
-            <% } %>
-            <% if (sectionProducts[2] && sectionProducts[2].products.length > 1) { %>
-                <% const product = sectionProducts[2].products[1]; %>
-                <div class="boxes" id="bx2">
-                    <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
-                    <p class="price">Price: <%= product.Price %></p>
-                    <p class="description"><%= product.short_Description %></p>
-                    <div class="buttons">
-                        <button class="add-to-cart" onclick="movecart()">Add to Cart</button>
-                        <button class="add-to-cart">View Details</button>
-                    </div>
-                </div>
-            <% } %>
-            <% if (sectionProducts[2] && sectionProducts[2].products.length > 2) { %>
-                <% const product = sectionProducts[2].products[2]; %>
-                <div class="boxes" id="bx3">
-                    <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
-                    <p class="price">Price: <%= product.Price %></p>
-                    <p class="description"><%= product.short_Description %></p>
-                    <div class="buttons">
-                        <button class="add-to-cart" onclick="movecart()">Add to Cart</button>
-                        <button class="add-to-cart">View Details</button>
-                    </div>
-                </div>
-            <% } %>
-            <% if (sectionProducts[2] && sectionProducts[2].products.length > 3) { %>
-                <% const product = sectionProducts[2].products[3]; %>
-                <div class="boxes" id="bx3">
-                    <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
-                    <p class="price">Price: <%= product.Price %></p>
-                    <p class="description"><%= product.short_Description %></p>
-                    <div class="buttons">
-                        <button class="add-to-cart">Add to Cart</button>
-                        <button class="add-to-cart">View Details</button>
-                    </div>
-                </div>
-            <% } %>
-
+            <%= renderProducts(2) %>
         </div>
     </div>
 
     <div class="Bks">
         <div class="Bks-row">
-            <% if (sectionProducts[3] && sectionProducts[3].products.length > 0) { %>
-                <% const product = sectionProducts[3].products[0]; %>
-                <div class="boxes" id="bx1">
-                    <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
-                    <p class="price">Price: <%= product.Price %></p>
-                    <p class="description"><%= product.short_Description %></p>
-                    <div class="buttons">
-                        <button class="add-to-cart">Add to Cart</button>
-                        <button class="add-to-cart">View Details</button>
-                    </div>
-                </div>
-            <% } %>
-            <% if (sectionProducts[3] && sectionProducts[3].products.length > 1) { %>
-                <% const product = sectionProducts[3].products[1]; %>
-                <div class="boxes" id="bx2">
-                    <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
-                    <p class="price">Price: <%= product.Price %></p>
-                    <p class="description"><%= product.short_Description %></p>
-                    <div class="buttons">
-                        <button class="add-to-cart">Add to Cart</button>
-                        <button class="add-to-cart">View Details</button>
-                    </div>
-                </div>
-            <% } %>
-            <% if (sectionProducts[3] && sectionProducts[3].products.length > 2) { %>
-                <% const product = sectionProducts[3].products[2]; %>
-                <div class="boxes" id="bx3">
-                    <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
-                    <p class="price">Price: <%= product.Price %></p>
-                    <p class="description"><%= product.short_Description %></p>
-                    <div class="buttons">
-                        <button class="add-to-cart">Add to Cart</button>
-                        <button class="add-to-cart">View Details</button>
-                    </div>
-                </div>
-            <% } %>
-            <% if (sectionProducts[3] && sectionProducts[3].products.length > 3) { %>
-                <% const product = sectionProducts[3].products[3]; %>
-                <div class="boxes" id="bx3">
-                    <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
-                    <p class="price">Price: <%= product.Price %></p>
-                    <p class="description"><%= product.short_Description %></p>
-                    <div class="buttons">
-                        <button class="add-to-cart">Add to Cart</button>
-                        <button class="add-to-cart">View Details</button>
-                    </div>
-                </div>
-            <% } %>
-
+            <%= renderProducts(3) %>
         </div>
     </div>
 
     <div class="HG">
         <div class="HG-row">
-            <% if (sectionProducts[4] && sectionProducts[4].products.length > 0) { %>
-                <% const product = sectionProducts[4].products[0]; %>
-                <div class="boxes" id="bx1">
-                    <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
-                    <p class="price">Price: <%= product.Price %></p>
-                    <p class="description"><%= product.short_Description %></p>
-                    <div class="buttons">
-                        <button class="add-to-cart">Add to Cart</button>
-                        <button class="add-to-cart">View Details</button>
-                    </div>
-                </div>
-            <% } %>
-            <% if (sectionProducts[4] && sectionProducts[4].products.length > 1) { %>
-                <% const product = sectionProducts[4].products[1]; %>
-                <div class="boxes" id="bx2">
-                    <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
-                    <p class="price">Price: <%= product.Price %></p>
-                    <p class="description"><%= product.short_Description %></p>
-                    <div class="buttons">
-                        <button class="add-to-cart">Add to Cart</button>
-                        <button class="add-to-cart">View Details</button>
-                    </div>
-                </div>
-            <% } %>
-            <% if (sectionProducts[4] && sectionProducts[4].products.length > 2) { %>
-                <% const product = sectionProducts[4].products[2]; %>
-                <div class="boxes" id="bx3">
-                    <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
-                    <p class="price">Price: <%= product.Price %></p>
-                    <p class="description"><%= product.short_Description %></p>
-                    <div class="buttons">
-                        <button class="add-to-cart">Add to Cart</button>
-                        <button class="add-to-cart">View Details</button>
-                    </div>
-                </div>
-            <% } %>
-            <% if (sectionProducts[4] && sectionProducts[4].products.length > 3) { %>
-                <% const product = sectionProducts[4].products[3]; %>
-                <div class="boxes" id="bx3">
-                    <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
-                    <p class="price">Price: <%= product.Price %></p>
-                    <p class="description"><%= product.short_Description %></p>
-                    <div class="buttons">
-                        <button class="add-to-cart">Add to Cart</button>
-                        <button class="add-to-cart">View Details</button>
-                    </div>
-                </div>
-            <% } %>
-
+            <%= renderProducts(4) %>
         </div>
     </div>
 
     <div class="PV">
         <div class="PV-row">
-            <% if (sectionProducts[5] && sectionProducts[5].products.length > 0) { %>
-                <% const product = sectionProducts[5].products[0]; %>
-                <div class="boxes" id="bx1">
-                    <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
-                    <p class="price">Price: <%= product.Price %></p>
-                    <p class="description"><%= product.short_Description %></p>
-                    <div class="buttons">
-                        <button class="add-to-cart">Add to Cart</button>
-                        <button class="add-to-cart">View Details</button>
-                    </div>
-                </div>
-            <% } %>
-            <% if (sectionProducts[5] && sectionProducts[5].products.length > 1) { %>
-                <% const product = sectionProducts[5].products[1]; %>
-                <div class="boxes" id="bx2">
-                    <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
-                    <p class="price">Price: <%= product.Price %></p>
-                    <p class="description"><%= product.short_Description %></p>
-                    <div class="buttons">
-                        <button class="add-to-cart">Add to Cart</button>
-                        <button class="add-to-cart">View Details</button>
-                    </div>
-                </div>
-            <% } %>
-            <% if (sectionProducts[5] && sectionProducts[5].products.length > 2) { %>
-                <% const product = sectionProducts[5].products[2]; %>
-                <div class="boxes" id="bx3">
-                    <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
-                    <p class="price">Price: <%= product.Price %></p>
-                    <p class="description"><%= product.short_Description %></p>
-                    <div class="buttons">
-                        <button class="add-to-cart">Add to Cart</button>
-                        <button class="add-to-cart">View Details</button>
-                    </div>
-                </div>
-            <% } %>
-            <% if (sectionProducts[5] && sectionProducts[5].products.length > 3) { %>
-                <% const product = sectionProducts[5].products[3]; %>
-                <div class="boxes" id="bx3">
-                    <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
-                    <p class="price">Price: <%= product.Price %></p>
-                    <p class="description"><%= product.short_Description %></p>
-                    <div class="buttons">
-                        <button class="add-to-cart">Add to Cart</button>
-                        <button class="add-to-cart">View Details</button>
-                    </div>
-                </div>
-            <% } %>
-
+            <%= renderProducts(5) %>
         </div>
     </div>
 
     <div class="PC">
         <div class="PC-row">
-            <% if (sectionProducts[6] && sectionProducts[6].products.length > 0) { %>
-                <% const product = sectionProducts[6].products[0]; %>
-                <div class="boxes" id="bx1">
-                    <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
-                    <p class="price">Price: <%= product.Price %></p>
-                    <p class="description"><%= product.short_Description %></p>
-                    <div class="buttons">
-                        <button class="add-to-cart">Add to Cart</button>
-                        <button class="add-to-cart">View Details</button>
-                    </div>
-                </div>
-            <% } %>
-            <% if (sectionProducts[6] && sectionProducts[6].products.length > 1) { %>
-                <% const product = sectionProducts[6].products[1]; %>
-                <div class="boxes" id="bx2">
-                    <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
-                    <p class="price">Price: <%= product.Price %></p>
-                    <p class="description"><%= product.short_Description %></p>
-                    <div class="buttons">
-                        <button class="add-to-cart">Add to Cart</button>
-                        <button class="add-to-cart">View Details</button>
-                    </div>
-                </div>
-            <% } %>
-            <% if (sectionProducts[6] && sectionProducts[6].products.length > 2) { %>
-                <% const product = sectionProducts[6].products[2]; %>
-                <div class="boxes" id="bx3">
-                    <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
-                    <p class="price">Price: <%= product.Price %></p>
-                    <p class="description"><%= product.short_Description %></p>
-                    <div class="buttons">
-                        <button class="add-to-cart">Add to Cart</button>
-                        <button class="add-to-cart">View Details</button>
-                    </div>
-                </div>
-            <% } %>
-            <% if (sectionProducts[6] && sectionProducts[6].products.length > 3) { %>
-                <% const product = sectionProducts[6].products[3]; %>
-                <div class="boxes" id="bx3">
-                    <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
-                    <p class="price">Price: <%= product.Price %></p>
-                    <p class="description"><%= product.short_Description %></p>
-                    <div class="buttons">
-                        <button class="add-to-cart">Add to Cart</button>
-                        <button class="add-to-cart">View Details</button>
-                    </div>
-                </div>
-            <% } %>
-
+            <%= renderProducts(6) %>
         </div>
     </div>
 
     <div class="E">
         <div class="E-row">
-            <% if (sectionProducts[7] && sectionProducts[7].products.length > 0) { %>
-                <% const product = sectionProducts[7].products[0]; %>
-                <div class="boxes" id="bx1">
-                    <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
-                    <p class="price">Price: <%= product.Price %></p>
-                    <p class="description"><%= product.short_Description %></p>
-                    <div class="buttons">
-                        <button class="add-to-cart">Add to Cart</button>
-                        <button class="add-to-cart">View Details</button>
-                    </div>
-                </div>
-            <% } %>
-            <% if (sectionProducts[7] && sectionProducts[7].products.length > 1) { %>
-                <% const product = sectionProducts[7].products[1]; %>
-                <div class="boxes" id="bx2">
-                    <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
-                    <p class="price">Price: <%= product.Price %></p>
-                    <p class="description"><%= product.short_Description %></p>
-                    <div class="buttons">
-                        <button class="add-to-cart">Add to Cart</button>
-                        <button class="add-to-cart">View Details</button>
-                    </div>
-                </div>
-            <% } %>
-            <% if (sectionProducts[7] && sectionProducts[7].products.length > 2) { %>
-                <% const product = sectionProducts[7].products[2]; %>
-                <div class="boxes" id="bx3">
-                    <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
-                    <p class="price">Price: <%= product.Price %></p>
-                    <p class="description"><%= product.short_Description %></p>
-                    <div class="buttons">
-                        <button class="add-to-cart">Add to Cart</button>
-                        <button class="add-to-cart">View Details</button>
-                    </div>
-                </div>
-            <% } %>
-            <% if (sectionProducts[7] && sectionProducts[7].products.length > 3) { %>
-                <% const product = sectionProducts[7].products[3]; %>
-                <div class="boxes" id="bx3">
-                    <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
-                    <p class="price">Price: <%= product.Price %></p>
-                    <p class="description"><%= product.short_Description %></p>
-                    <div class="buttons">
-                        <button class="add-to-cart">Add to Cart</button>
-                        <button class="add-to-cart">View Details</button>
-                    </div>
-                </div>
-            <% } %>
-
+            <%= renderProducts(7) %>
         </div>
     </div>
 
     <div class="TG">
         <div class="TG-row">
-            <% if (sectionProducts[8] && sectionProducts[8].products.length > 0) { %>
-                <% const product = sectionProducts[8].products[0]; %>
-                <div class="boxes" id="bx1">
-                    <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
-                    <p class="price">Price: <%= product.Price %></p>
-                    <p class="description"><%= product.short_Description %></p>
-                    <div class="buttons">
-                        <button class="add-to-cart">Add to Cart</button>
-                        <button class="add-to-cart">View Details</button>
-                    </div>
-                </div>
-            <% } %>
-            <% if (sectionProducts[8] && sectionProducts[8].products.length > 1) { %>
-                <% const product = sectionProducts[8].products[1]; %>
-                <div class="boxes" id="bx2">
-                    <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
-                    <p class="price">Price: <%= product.Price %></p>
-                    <p class="description"><%= product.short_Description %></p>
-                    <div class="buttons">
-                        <button class="add-to-cart">Add to Cart</button>
-                        <button class="add-to-cart">View Details</button>
-                    </div>
-                </div>
-            <% } %>
-            <% if (sectionProducts[8] && sectionProducts[8].products.length > 2) { %>
-                <% const product = sectionProducts[8].products[2]; %>
-                <div class="boxes" id="bx3">
-                    <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
-                    <p class="price">Price: <%= product.Price %></p>
-                    <p class="description"><%= product.short_Description %></p>
-                    <div class="buttons">
-                        <button class="add-to-cart">Add to Cart</button>
-                        <button class="add-to-cart">View Details</button>
-                    </div>
-                </div>
-            <% } %>
-            <% if (sectionProducts[8] && sectionProducts[8].products.length > 3) { %>
-                <% const product = sectionProducts[8].products[3]; %>
-                <div class="boxes" id="bx3">
-                    <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
-                    <p class="price">Price: <%= product.Price %></p>
-                    <p class="description"><%= product.short_Description %></p>
-                    <div class="buttons">
-                        <button class="add-to-cart">Add to Cart</button>
-                        <button class="add-to-cart">View Details</button>
-                    </div>
-                </div>
-            <% } %>
-
+            <%= renderProducts(8) %>
         </div>
     </div>
 
     <div class="B">
         <div class="B-row">
-            <% if (sectionProducts[9] && sectionProducts[9].products.length > 0) { %>
-                <% const product = sectionProducts[9].products[0]; %>
-                <div class="boxes" id="bx1">
-                    <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
-                    <p class="price">Price: <%= product.Price %></p>
-                    <p class="description"><%= product.short_Description %></p>
-                    <div class="buttons">
-                        <button class="add-to-cart">Add to Cart</button>
-                        <button class="add-to-cart">View Details</button>
-                    </div>
-                </div>
-            <% } %>
-            <% if (sectionProducts[9] && sectionProducts[9].products.length > 1) { %>
-                <% const product = sectionProducts[9].products[1]; %>
-                <div class="boxes" id="bx2">
-                    <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
-                    <p class="price">Price: <%= product.Price %></p>
-                    <p class="description"><%= product.short_Description %></p>
-                    <div class="buttons">
-                        <button class="add-to-cart">Add to Cart</button>
-                        <button class="add-to-cart">View Details</button>
-                    </div>
-                </div>
-            <% } %>
-            <% if (sectionProducts[9] && sectionProducts[9].products.length > 2) { %>
-                <% const product = sectionProducts[9].products[2]; %>
-                <div class="boxes" id="bx3">
-                    <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
-                    <p class="price">Price: <%= product.Price %></p>
-                    <p class="description"><%= product.short_Description %></p>
-                    <div class="buttons">
-                        <button class="add-to-cart">Add to Cart</button>
-                        <button class="add-to-cart">View Details</button>
-                    </div>
-                </div>
-            <% } %>
-            <% if (sectionProducts[9] && sectionProducts[9].products.length > 3) { %>
-                <% const product = sectionProducts[9].products[3]; %>
-                <div class="boxes" id="bx3">
-                    <h1><%= product.Name %></h1>
-                    <img id="backdrop" src="data:image/png;base64,<%=product.product_img%>" alt="<%= product.Name %>" width="270" height="412">
-                    <p class="price">Price: <%= product.Price %></p>
-                    <p class="description"><%= product.short_Description %></p>
-                    <div class="buttons">
-                        <button class="add-to-cart">Add to Cart</button>
-                        <button class="add-to-cart">View Details</button>
-                    </div>
-                </div>
-            <% } %>
-
+            <%= renderProducts(9) %>
         </div>
     </div>
 
