@@ -71,14 +71,10 @@ body{
 }
 
 #Cart{
-    left: 5%;
     padding-top: 3px;
     transition: all;
     transition-duration: 1s;
-}
-
-#Cart a{
-    color: rgb(0, 131, 239);
+    color: white;
 }
 
 #fav{
@@ -457,45 +453,9 @@ body{
 }
 
 .boxes{
-    /* background-color: #03004d55; */
     background-color: black;
 }
 
-/* .BS-row .boxes{
-    background-color: #34005766;
-}
-
-.NR-row .boxes{
-    background-color: #332b2397;
-}
-
-.Bks-row .boxes{
-    background-color: #926d3668;
-}
-
-.HG-row .boxes{
-    background-color: #323F1F;
-}
-
-.PV-row .boxes{
-    background-color: #95959558;
-}
-
-.PC-row .boxes{
-    background-color: #95959558;
-}
-
-.E-row .boxes{
-    background-color: #000000a1;
-}
-
-.TG-row .boxes{
-    background-color: #c100003d;
-}
-
-.B-row .boxes{
-    background-color: #53002849;
-} */
 
 #bx1,#bx2,#bx3,#bx4{
     transition-property: all;
@@ -673,13 +633,78 @@ body{
 
 .left-options{
     position: absolute;
-    background-color: white;
+    background-color:#feffffb9;
     width: 30%;
-    height: 100%;
+    height: 72.5%;
     top: 50px;
     z-index: 2;
     transition: all;
     transition-duration: 0.5s;
+    display: flex;
+    align-items: center;
+    flex-direction:column;
+}
+
+.cart-div{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    background-color:#131a22;
+    justify-content: center;
+    color: white;
+    border-bottom-left-radius: 50%;
+    border-bottom-right-radius: 50%;
+}
+
+#cart-icon{
+    position: absolute;
+    top: 39px;
+    right: 110px;
+}
+
+.cart-item-div{
+    margin: 20px;
+    width: 98%;
+}
+
+#cart-items-div{
+    display: flex;
+    justify-content: center;
+    box-sizing: border-box;
+    border: 2px solid grey;
+    padding: 5px;
+    border-radius: 5px;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+#delete_btn{
+    background-color: transparent;
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
+
+}
+.cart_name,.cart_price,.cart_quantity{
+    display:inline-block;
+    font-size: 100%;
+    margin: 5px;
+    padding: 1px;
+}
+
+.cart-items-info{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    flex-direction: column;
+}
+
+
+.cart-items-info img{
+    top: 0px;
+    left: 0px;
 }
 
 /* These are the styles for the Products */

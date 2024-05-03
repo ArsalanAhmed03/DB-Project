@@ -45,18 +45,24 @@ app.get('/', async (req, res) => {
         const isSeller = req.cookies.IS_SELLER === 'true';
 
         const sectionProducts = [];
+        const sectionCart = [];
         const categories = [
             { name: 'All', query: 'SELECT * FROM Products' },
             { name: 'Best Sellers', query: 'SELECT * FROM Products ORDER BY totalsales LIMIT 4' },
             { name: 'New Releases', query: 'SELECT * FROM Products ORDER BY EntryDate LIMIT 4' },
             { name: 'Books', query: 'SELECT * FROM Products WHERE Category = "Books"' },
-            { name: 'Home Garden', query: 'SELECT * FROM Products WHERE Category = "Home Garden"' },
-            { name: 'PC & Video Games', query: 'SELECT * FROM Products WHERE Category = "PC & Video Games"' },
-            { name: 'PC', query: 'SELECT * FROM Products WHERE Category = "PC"' },
-            { name: 'Electronics', query: 'SELECT * FROM Products WHERE Category = "Electronics"' },
-            { name: 'Toys & Games', query: 'SELECT * FROM Products WHERE Category = "Toys & Games"' },
-            { name: 'Beauty', query: 'SELECT * FROM Products WHERE Category = "Beauty"' }
+            { name: 'Home Garden', query: 'SELECT * FROM Products WHERE Category = "Home Garden" LIMIT 4' },
+            { name: 'PC & Video Games', query: 'SELECT * FROM Products WHERE Category = "PC & Video Games" LIMIT 4' },
+            { name: 'PC', query: 'SELECT * FROM Products WHERE Category = "PC" LIMIT 4' },
+            { name: 'Electronics', query: 'SELECT * FROM Products WHERE Category = "Electronics" LIMIT 4' },
+            { name: 'Toys & Games', query: 'SELECT * FROM Products WHERE Category = "Toys & Games" LIMIT 4' },
+            { name: 'Beauty', query: 'SELECT * FROM Products WHERE Category = "Beauty" LIMIT 4' }
         ];
+
+        const get_cart = 'select P.product_img,P.ProductID,P.Name,P.Price,C.quantity,C.UserID from Cart as C Join Products as P ON C.ProductID = P.ProductID WHERE C.UserID = ?;';
+        const UserID = req.cookies.UserId;
+        const [cart_items] = await mysql.promise().query(get_cart,[UserID]);
+        sectionCart.push({cart_items:cart_items});
 
         for (const category of categories) {
             const [products] = await mysql.promise().query(category.query);
@@ -66,7 +72,8 @@ app.get('/', async (req, res) => {
         res.render('Index', { 
             loggedin: loggedIn ? 'true' : 'false', 
             IS_SELLER: isSeller ? 'true' : 'false', 
-            sectionProducts: sectionProducts 
+            sectionProducts: sectionProducts,
+            sectionCart: sectionCart
         });
     } catch (error) {
         console.error('Error retrieving products:', error);

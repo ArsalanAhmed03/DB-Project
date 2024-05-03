@@ -24,11 +24,6 @@
         <div class="browse-button" onclick="hide_options()">
             <button>Browse</button>
         </div>
-        <div class="options" onclick="hide_options()">
-            <div class="dots"></div>
-            <div class="dots"></div>
-            <div class="dots"></div>
-        </div>
 
         <form id = 'input-form' action="/submit" method="post">
         <input id="searchInput" name="searchInput" type="text" placeholder="Search">
@@ -62,12 +57,10 @@
             <button class="options" id = "profile">
                 <a href="/profile-setup"><i class="fa-regular fa-user"></i></a>
             </button>
-            <button class="options" id="Cart">
-                <a href="/Cart" style="color: white"><i class="fa-solid fa-cart-shopping fa-lg"></i></a>
+            <button class="options" id="Cart" onclick="hide_options()">
+                <i class="fa-solid fa-cart-shopping fa-lg"></i></a>
             </button>
-        <% } %>   
-
-        
+        <% } %>  
         
     </div>
 
@@ -97,19 +90,23 @@
             <img id="backdrop" src="data:image/png;base64,<%= product.product_img %>" alt="<%= product.Name %>" width="270" height="412">
             <p class="price">Price: <%= product.Price %></p>
             <p class="description"><%= product.short_Description %></p>
+            <% if (loggedin === 'true') { %>
             <button id="fav" onclick="add_favourite('<%= product.ProductID %>', '#empty0<%= i %>', '#full0<%= i %>')"> 
                 <i class="fa-solid fa-star fa-lg" id="full0<%= i %>" style="display: none;"></i>
                 <i class="fa-regular fa-star fa-lg" id="empty0<%= i %>" style="display: block;"></i>
             </button>
+            <%}%>
             <div class="buttons">
+                <% if (loggedin === 'true') { %>
                 <button class="add-to-cart" onclick="movecart('<%= product.ProductID %>');">Add to Cart</button>
+                <%}%>
                 <button type="button" class="add-to-cart">View Details</button>
             </div>
         </div>
 <% } %>
 <% } %>
 
-    <div class="main-body">
+    <div class="main-body" onclick="hide_options_M()">
         <img id = "front-logo" src="/images/_51248235-4728-4a41-a966-d383c13ce461.png" alt="">
         <div class="All-row">
             <%= renderProducts(0) %>
@@ -118,55 +115,55 @@
         </div>
     </div>
 
-    <div class="BS">
+    <div class="BS" onclick="hide_options_M()">
         <div class="BS-row">
             <%= renderProducts(1) %>
         </div>
     </div>
 
-    <div class="NR">
+    <div class="NR" onclick="hide_options_M()">
         <div class="NR-row">
             <%= renderProducts(2) %>
         </div>
     </div>
 
-    <div class="Bks">
+    <div class="Bks" onclick="hide_options_M()">
         <div class="Bks-row">
             <%= renderProducts(3) %>
         </div>
     </div>
 
-    <div class="HG">
+    <div class="HG" onclick="hide_options_M()">
         <div class="HG-row">
             <%= renderProducts(4) %>
         </div>
     </div>
 
-    <div class="PV">
+    <div class="PV" onclick="hide_options_M()">
         <div class="PV-row">
             <%= renderProducts(5) %>
         </div>
     </div>
 
-    <div class="PC">
+    <div class="PC" onclick="hide_options_M()">
         <div class="PC-row">
             <%= renderProducts(6) %>
         </div>
     </div>
 
-    <div class="E">
+    <div class="E" onclick="hide_options_M()">
         <div class="E-row">
             <%= renderProducts(7) %>
         </div>
     </div>
 
-    <div class="TG">
+    <div class="TG" onclick="hide_options_M()">
         <div class="TG-row">
             <%= renderProducts(8) %>
         </div>
     </div>
 
-    <div class="B">
+    <div class="B" onclick="hide_options_M()">
         <div class="B-row">
             <%= renderProducts(9) %>
         </div>
@@ -209,8 +206,30 @@
 
     <div class="page-footer-back"></div>
 
-    <div class="left-options" style="left: -30%">
+    <%const renderCart = () => {%>
+        <%const products = sectionCart[0].cart_items;%>
+        <%for (let i = 0; i < products.length; i++) {%>
+            <%const product = products[i];%>
+            <div id="cart-items-div">
+                <img src="data:image/png;base64,<%= product.product_img %>" alt="product.Name" width="75" height="75">
+                <div class="cart-items-info">
+                    <div class="cart_name"><%=product.Name%></div> 
+                    <div class="cart_price">Price: <%=product.Price%></div>
+                    <div class="cart_quantity">Quantity: <%=product.quantity%></div>
+                </div>
+                <button id="delete_btn"><i class="fa-solid fa-trash fa-lg"></i></button>
+            </div>
+        <%}%>
+    <%}%>>
 
+    <div class="left-options" style="left: -30%">
+        <div class="cart-div">
+            <h1>Cart</h1>
+            <i id="cart-icon" class="fa-solid fa-cart-shopping fa-xl"></i>
+        </div>
+        <div class="cart-item-div">
+            <%renderCart()%>
+        </div>
     </div>
     
 
