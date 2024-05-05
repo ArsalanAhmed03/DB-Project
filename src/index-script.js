@@ -90,9 +90,7 @@ function hide_options(){
 function movecart(pID){
     const productId = pID;
     const cart = document.querySelector("#Cart");
-    // const linkInsideCart = cart.querySelector("a");
     cart.style.transform = "translateX(100px)";
-    // linkInsideCart.style.color = "rgb(0, 131, 239)";
         fetch('/addtocart', {
             method: 'POST',
             headers: {
@@ -165,6 +163,25 @@ function add_favourite(pID, emptyid, fullid){
             console.error('Error removing product from favourite:', error);
         });
     }
+}
 
-    
+function deleteCart(pID){
+    const productId = parseInt(pID);
+        fetch('/removefromcart', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ productId: productId })
+        })
+        .then(response => {
+            if (response.ok) {
+                console.log('Product removed from cart!');
+            } else {
+                console.error('Failed to remove from cart');
+            }
+        })
+        .catch(error => {
+            console.error('Error removing from cart:', error);
+        });
 }

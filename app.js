@@ -47,7 +47,7 @@ app.get('/', async (req, res) => {
         const sectionProducts = [];
         const sectionCart = [];
         const categories = [
-            { name: 'All', query: 'SELECT * FROM Products' },
+            { name: 'All', query: 'SELECT * FROM Products LIMIT 4' },
             { name: 'Best Sellers', query: 'SELECT * FROM Products ORDER BY totalsales LIMIT 4' },
             { name: 'New Releases', query: 'SELECT * FROM Products ORDER BY EntryDate LIMIT 4' },
             { name: 'Books', query: 'SELECT * FROM Products WHERE Category = "Books"' },
@@ -81,6 +81,30 @@ app.get('/', async (req, res) => {
     }
 });
 
+app.get('/search_item',(req,res)=>{
+    const loggedIn = req.cookies.SignedIn === 'true';
+    const isSeller = req.cookies.IS_SELLER === 'true';
+    const search_term_o = req.cookies.search_term;
+    const filter_term = req.cookies.filter_term;
+    const search_term = '%' + search_term_o + '%';
+    const search_query = 'select * from Products where Name LIKE ? OR short_Description LIKE ?';
+    mysql.query(search_query,[search_term,search_term],(err,all_products)=>{
+        if(err){
+            console.log(err);
+        }
+        else{
+            res.render('search_page', { 
+                loggedin: loggedIn ? 'true' : 'false', 
+                IS_SELLER: isSeller ? 'true' : 'false',
+                all_products:all_products,
+                search_term:search_term_o
+            });
+        }
+    });
+
+
+});
+
 
 app.get('/login',(req,res)=>{
     res.sendFile('Sign-In.html',{root:public_dir});
@@ -106,10 +130,7 @@ app.get('/product-listing',(req,res)=>{
     res.sendFile('product-listing.html',{root:public_dir});
 })
 
-app.get('/Cart',(req,res)=>{
-    // res.sendFile('Cart.html',{root:public_dir});
-    res.render('Cart');
-})
+
 
 app.get('/profile-setup',(req,res)=>{
 
@@ -131,17 +152,6 @@ app.listen(port,()=>{
     console.log(`The server ${port} has been connected`);
 })
 
-
-app.post('/submit', (req, res) => {
-        const searchInput = req.body.searchInput;
-
-        const sql = 'insert into search_entry (search_content) values (?)';
-        mysql.query(sql, [searchInput], (err, result) => {
-            if (err) throw err;
-            console.log('Data inserted successfully');
-            res.send('Data inserted successfully');
-        });
-});   
 
 app.post('/SignUpUN', (req, res) => {
     const name = req.body.UserName;
@@ -464,117 +474,13 @@ app.post('/addtocart',(req,res)=>{
                     if(err3){
                         console.error(err3);
                     }
-                })
+                });
             }
         }
 });
 
 
 });
-
-// app.post('/add_favourite',(req,res)=>{
-//     const pID = parseInt(req.body.productId);
-//     const UserID = parseInt(req.cookies.UserId);
-//     console.log(pID);
-//     const check_favourite = 'select UserID,ProductID from WishList_U as U JOIN WishList_P as P ON U.WishListID = P.WishlistID WHERE UserID = ? AND ProductID = ?;';
-
-//     mysql.query(check_favourite,[UserID,pID],(err1,returnval)=>{
-//         if(err1){
-//             console.log("error1");
-//         }
-//         else{
-//             if(returnval.length < 0){
-//                 console.log("Item already in favourite for this user");
-//             }
-//             else{
-//                 const check_user = 'select WishListID from WishList_U where UserID = ?';
-//                 mysql.query(check_user,[UserID],(err2,user_found)=>{
-//                     if(err2){
-//                         console.log(error2);
-//                     }
-//                     else{
-//                         if(user_found.length > 0){
-//                             const insert_item = 'INSERT INTO WishList_P(ProductID,WishListID)values(?,?)';
-//                                 mysql.query(insert_item,[pID,user_found[0].WishListID],(err6,added)=>{
-//                                     if(err6){
-//                                     console.log("error6");
-//                                     }
-//                         });
-//                         }   
-//                         else{
-//                             const add_user = 'INSERT INTO WishList_U(UserID)values(?)';
-//                             mysql.query(add_user,[UserID],(err3,added)=>{
-//                                 if(err3){
-//                                     console.log("error3");
-//                                 }
-//                                 else{
-//                                     console.log('User Added');
-//                                     const get_WishID = 'select WishListID from WishList_U where UserID = ?';
-//                                     mysql.query(get_WishID,[UserID],(err4,wishID)=>{
-//                                         if(err4){
-//                                             console.log("error4");
-//                                         }
-//                                         else{
-//                                             const insert_item = 'INSERT INTO WishList_P(ProductID,WishListID)values(?,?)';
-//                                             mysql.query(insert_item,[pID,wishID[0].WishListID],(err5,added)=>{
-//                                                 if(err5){
-//                                                 console.log("error5");
-//                                                 }
-//                                             });  
-//                                         }
-//                                     })
-//                                 }
-//                             })
-//                         }
-                        
-//                     }
-//                 });
-//             }
-//         }
-
-//     });
-
-// });
-
-// app.post('/remove_favourite',(req,res)=>{
-//     const pID = parseInt(req.body.productId);
-//     const UserID = parseInt(req.cookies.UserId);
-    
-//     const check_favourite = 'select WishListID from WishList_U where UserID = ?';
-
-//     mysql.query(check_favourite,[UserID],(err1,wishID)=>{
-//         if(err1){
-//             console.log("err1");
-//         }
-//         else{
-//             const remove_P = 'delete from WishList_P where WishListID = ? AND ProductID = ?'
-//             mysql.query(remove_P,[wishID[0].WishListID,pID],(err2,rem)=>{
-//                 if(err2){
-//                     console.log("err2");
-//                 }
-//                 else{
-//                     const check_P = 'select * from WishList_P where WishListID = ?'
-//                     mysql.query(check_P,[wishID[0].WishListID],(err3,rem)=>{
-//                     if(err3){
-//                     console.log("err3");
-//                     }
-//                     else{
-//                         if(rem.length < 1){
-//                             const remove_P = 'delete from WishList_U where UserID = ?'
-//                             mysql.query(remove_P,[UserID],(err4,final)=>{
-//                                 if(err4){
-//                                     console.log("err4");
-//                                 }
-//                             });
-//                         }
-//                     }
-//                 });
-//             }
-//         });
-//     }
-// });
-
-// });
 
 app.post('/add_favourite', (req, res) => {
     const pID = parseInt(req.body.productId);
@@ -687,3 +593,31 @@ app.post('/remove_favourite', (req, res) => {
         });
     });
 });
+
+app.post('/removefromcart',(req,res)=>{
+    const pID = parseInt(req.body.productId);
+    const UserID = parseInt(req.cookies.UserId);
+
+    const remove_cart = 'DELETE FROM Cart where ProductID = ? AND UserID = ?';
+
+    mysql.query(remove_cart,[pID,UserID],(err,final)=>{
+        if(err){
+            console.error(err);
+        }
+        else{
+            console.log("ITEM REMOVED FROM CART");
+        }
+    });
+});
+
+
+app.post('/filterItems',(req,res)=>{
+    const search_term = req.body.SearchTerm;
+    const filter_term = '%'+ req.body.SearchTerm +'%';
+    res.cookie('search_term',search_term);
+    res.cookie('filter_term',filter_term);
+    res.redirect('/search_item');
+});
+
+
+

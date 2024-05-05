@@ -438,23 +438,10 @@ body{
 
 
 
-.boxes{
-    opacity: 1;
-    width: 270px; 
-    height: 100%;
-    left: 20px;
-    border-radius: 5px;
-    border: 0px;
-    margin: 10px;
-}
-
 #BAS{
     right: 30%;
 }
 
-.boxes{
-    background-color: black;
-}
 
 
 #bx1,#bx2,#bx3,#bx4{
@@ -473,7 +460,6 @@ body{
     transform: scale(1.05);
     align-self: center;
     margin: 1px;
-
 }
 
 #bx3:hover{
@@ -717,8 +703,13 @@ body{
     text-align: center;
     color: white;
     position: relative;
-    /* border: 2px solid rgba(255, 255, 255, 0.17); */
-
+    opacity: 1;
+    width: 270px; 
+    height: 100%;
+    border-radius: 5px;
+    border: 0px;
+    margin: 10px;
+    background-color: black;
 }
 
 .boxes img{
@@ -728,7 +719,6 @@ body{
 }
 
 #bx1 img:hover,#bx2 img:hover,#bx3 img:hover,#bx4 img:hover{
-    /* transform: scale(1.1); */
     cursor: pointer;
 }
 
@@ -752,7 +742,6 @@ body{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    /* background-color: red; */
 }
 
 #backdrop{
