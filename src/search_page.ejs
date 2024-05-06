@@ -56,16 +56,15 @@
       <p>Home / Search Results</p>
     </div>
 
-    <form action="/filterItems" method="post" class="container3">
+    <form action="/further_filter" method="post" class="container3">
         <p><%=all_products.length%> items found for "<%=search_term%>"</p>
-        <!-- <p id="a3">Sort by:</p> -->
         <button type="submit">Sort by:</button>
             <select name="FilterTerm" id="filtersDropdown">
-                <option value="option1">Best Match</option>
-                <option value="option2">Top Sales</option>
-                <option value="option3">Price High to Low</option>
-                <option value="option4">Price Low to High</option>
-                <option value="option5">Newest Arrivals</option>
+                <option value="Best Match">Best Match</option>
+                <option value="Top Sales">Top Sales</option>
+                <option value="Price High to Low">Price High to Low</option>
+                <option value="Price Low to High">Price Low to High</option>
+                <option value="Newest Arrivals">Newest Arrivals</option>
             </select>
         </form>
 
@@ -85,9 +84,9 @@
         <%}%>
         <div class="buttons">
             <% if (loggedin === 'true') { %>
-            <button class="add-to-cart" onclick="movecart('<%= product.ProductID %>');">Add to Cart</button>
+            <button type="button" class="add-to-cart" onclick="movecart_search('<%= product.ProductID %>');">Add to Cart</button>
             <%}%>
-            <button type="button" class="add-to-cart">View Details</button>
+            <button class="add-to-cart" onclick="view_details('<%=product.ProductID%>')">View Details</button>
         </div>
     </div>
     <%}%>
@@ -98,7 +97,7 @@
     </div>
 
 
-        
+    <script src="/src/index-script.js"></script>
 
 </body>
 </html>

@@ -85,26 +85,77 @@ app.get('/search_item',(req,res)=>{
     const loggedIn = req.cookies.SignedIn === 'true';
     const isSeller = req.cookies.IS_SELLER === 'true';
     const search_term_o = req.cookies.search_term;
-    const filter_term = req.cookies.filter_term;
     const search_term = '%' + search_term_o + '%';
-    const search_query = 'select * from Products where Name LIKE ? OR short_Description LIKE ?';
-    mysql.query(search_query,[search_term,search_term],(err,all_products)=>{
-        if(err){
-            console.log(err);
+    if(req.cookies.filter_term && req.cookies.filter_term !== 'Best Match'){
+        const filter = req.cookies.filter_term;
+        res.clearCookie('filter_term');
+        let filter_query = 'select * from Products where Name LIKE ? OR short_Description LIKE ?';
+        if(filter === 'Top Sales'){
+            filter_query += ' ORDER BY totalsales';
+        }
+        else if(filter === 'Price High to Low'){
+            filter_query += ' ORDER BY Price DESC';
+        }
+        else if(filter === 'Price Low to High'){
+            filter_query += ' ORDER BY Price';
         }
         else{
-            res.render('search_page', { 
+            filter_query += ' ORDER BY EntryDate';
+        }
+
+        mysql.query(filter_query,[search_term,search_term],(err,all_products)=>{
+            if(err){
+                console.log(err);
+            }
+            else{
+                res.render('search_page', { 
+                    loggedin: loggedIn ? 'true' : 'false', 
+                    IS_SELLER: isSeller ? 'true' : 'false',
+                    all_products:all_products,
+                    search_term:search_term_o
+                });
+            }
+        });
+
+    }
+    else{
+        const search_query = 'select * from Products where Name LIKE ? OR short_Description LIKE ?';
+        mysql.query(search_query,[search_term,search_term],(err,all_products)=>{
+            if(err){
+                console.log(err);
+            }
+            else{
+                res.render('search_page', { 
+                    loggedin: loggedIn ? 'true' : 'false', 
+                    IS_SELLER: isSeller ? 'true' : 'false',
+                    all_products:all_products,
+                    search_term:search_term_o
+                });
+            }
+        });
+    }
+});
+
+
+app.get('/product_page',(req,res)=>{
+    const loggedIn = req.cookies.SignedIn === 'true';
+    const isSeller = req.cookies.IS_SELLER === 'true';
+    const pID = parseInt(req.cookies.AlldetailProduct);
+    const get_all_details = 'select * from Products WHERE ProductID = ?';
+    mysql.query(get_all_details,[pID],(err,respon)=>{
+        if(err){
+            console.log('error');
+        }
+        else{
+            res.render('Product_detail', { 
                 loggedin: loggedIn ? 'true' : 'false', 
                 IS_SELLER: isSeller ? 'true' : 'false',
-                all_products:all_products,
-                search_term:search_term_o
+                product:respon
             });
         }
     });
 
-
 });
-
 
 app.get('/login',(req,res)=>{
     res.sendFile('Sign-In.html',{root:public_dir});
@@ -130,8 +181,6 @@ app.get('/product-listing',(req,res)=>{
     res.sendFile('product-listing.html',{root:public_dir});
 })
 
-
-
 app.get('/profile-setup',(req,res)=>{
 
     const isSeller = req.cookies.IS_SELLER === 'true';
@@ -146,7 +195,6 @@ app.get('/SellerSetup',(req,res)=>{
 app.get('/AddProduct',(req,res)=>{
     res.sendFile('product-listing.html',{root:public_dir});
 })
-
 
 app.listen(port,()=>{
     console.log(`The server ${port} has been connected`);
@@ -446,6 +494,9 @@ app.post('/gotohome',(req,res)=>{
     res.clearCookie('loginmail');
     res.clearCookie('name');
     res.clearCookie('username');
+    res.clearCookie('search_term');
+    res.clearCookie('filter_term');
+    res.clearCookie('AlldetailProduct');
     res.redirect('/');
 });
 
@@ -462,17 +513,23 @@ app.post('/addtocart',(req,res)=>{
         else{
             if(p_quantity.length < 1){
                 const add_cart = 'INSERT INTO Cart(ProductID,UserID,quantity) VALUES(?,?,?)';
-                mysql.query(add_cart, [pID,UserID,1], (err2,res)=>{
+                mysql.query(add_cart, [pID,UserID,1], (err2,response)=>{
                     if (err2) {
                         console.error('Error adding product to cart:', err);
+                    }
+                    else{
+                        res.redirect('/');
                     }
                 });
             }
             else{
                 const update_item = 'update Cart set quantity = ? where ProductID = ?';
-                mysql.query(update_item,[p_quantity[0].quantity + 1,pID],(err3,final)=>{
+                mysql.query(update_item,[p_quantity[0].quantity + 1,pID],(err3,response)=>{
                     if(err3){
                         console.error(err3);
+                    }
+                    else{
+                        res.redirect('/');
                     }
                 });
             }
@@ -606,18 +663,26 @@ app.post('/removefromcart',(req,res)=>{
         }
         else{
             console.log("ITEM REMOVED FROM CART");
+            res.redirect('/');
         }
     });
 });
 
-
 app.post('/filterItems',(req,res)=>{
     const search_term = req.body.SearchTerm;
-    const filter_term = '%'+ req.body.SearchTerm +'%';
     res.cookie('search_term',search_term);
+    res.redirect('/search_item');
+});
+
+app.post('/further_filter',(req,res)=>{
+    const filter_term = req.body.FilterTerm;
     res.cookie('filter_term',filter_term);
     res.redirect('/search_item');
 });
 
+app.post('/view_details',(req,res)=>{
+    res.cookie('AlldetailProduct',req.body.productId);
+    res.redirect();
+});
 
 

@@ -99,9 +99,10 @@ function movecart(pID){
             body: JSON.stringify({ productId: productId })
         })
         .then(response => {
-            if (response.ok) {
-                console.log('Product added to cart!');
-            } else {
+            if(response.redirected){
+                window.location.href = response.url;
+            }
+            else {
                 console.error('Failed to add product to cart');
             }
         })
@@ -111,6 +112,27 @@ function movecart(pID){
         setTimeout(() => {
             cart.style.transform = "translateX(0px)";
         }, 1000);
+}
+
+function movecart_search(pID){
+    const productId = pID;
+        fetch('/addtocart', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ productId: productId })
+        })
+        .then(response => {
+            if (response.ok) {
+                console.log('Product added to cart!');
+            } else {
+                console.error('Failed to add product to cart');
+            }
+        })
+        .catch(error => {
+            console.error('Error adding product to cart:', error);
+        });
 }
 
 function add_favourite(pID, emptyid, fullid){
@@ -175,8 +197,9 @@ function deleteCart(pID){
             body: JSON.stringify({ productId: productId })
         })
         .then(response => {
-            if (response.ok) {
+            if (response.redirected) {
                 console.log('Product removed from cart!');
+                window.location.href = response.url;
             } else {
                 console.error('Failed to remove from cart');
             }
@@ -184,4 +207,27 @@ function deleteCart(pID){
         .catch(error => {
             console.error('Error removing from cart:', error);
         });
+}
+
+function view_details(pID){
+    const productId = parseInt(pID);
+    fetch('/view_details', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ productId: productId })
+    })
+    .then(response => {
+        if (response.redirected) {
+            console.log(response.url);
+            window.location.href = '/product_page';
+        } else {
+            console.error('Failed to remove from cart');
+        }
+    })
+    .catch(error => {
+        console.error('Error removing from cart:', error);
+    });
+
 }

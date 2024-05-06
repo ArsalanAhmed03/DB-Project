@@ -98,9 +98,9 @@
             <%}%>
             <div class="buttons">
                 <% if (loggedin === 'true') { %>
-                <button class="add-to-cart" onclick="movecart('<%= product.ProductID %>');">Add to Cart</button>
+                <button type="button" class="add-to-cart" onclick="movecart('<%= product.ProductID %>');">Add to Cart</button>
                 <%}%>
-                <button type="button" class="add-to-cart">View Details</button>
+                <button class="add-to-cart" onclick="view_details('<%=product.ProductID%>')">View Details</button>
             </div>
         </div>
 <% } %>

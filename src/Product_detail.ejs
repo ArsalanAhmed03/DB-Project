@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/CSS/product-detail-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Document</title>
+</head>
+<body>
+    <div class="page-header">
+        
+        <img id = "logo" src="/images/_51248235-4728-4a41-a966-d383c13ce461.png" alt="" width="111" height="110">
+        <form id = "link" method="post" action="/gotohome"><button type="submit"></button></form>
+
+        <form id = 'input-form' action="/filterItems" method="post">
+        <input id="searchInput" name="SearchTerm" type="text" placeholder="Search">
+
+        <div class="search-icon-div">
+            <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </div>
+        </form>
+
+
+        <% if (loggedin === 'false') { %>
+        <div class="login-div">
+            <button><a href="/login" target="_blank">Log In</a></button>
+        </div>
+        <div class="signup-div">
+            <button><a href="/SignUp">Sign Up</a></button>
+        </div>
+        <% } else { %>
+            <% if(IS_SELLER === 'false'){ %>
+            <div class="Seller-div">
+                <button><a href="/SellerSetup" target="_self">Become A Seller</a></button>
+            </div>
+            <%} else {%>
+                <div class="Seller-div">
+                    <button><a href="/addproduct" target="_self">Add Products</a></button>
+                </div>
+            <%}%>
+            <form action="/logout" method="post" class="logout-div">
+                <button type="submit">Log Out</button>
+            </form>
+            <button class="options" id = "profile">
+                <a href="/profile-setup"><i class="fa-regular fa-user"></i></a>
+            </button>
+        <% } %>  
+    </div>
+
+    <div class="rest-page">
+        <img id="backdrop" src="data:image/png;base64,<%= product[0].product_img %>" alt="<%= product[0].Name %>" width="200" height="300">
+        <div class="product-info">
+            <h1><%= product[0].Name %></h1>
+            <h3> <i>Category:</i> <%= product[0].Category %></h3>
+            <h2><%= product[0].short_Description %></h2>
+            <h4><%= product[0].long_Description %></h4>
+        </div>
+        <button onclick="movecart_search('<%= product[0].ProductID %>')">Add To Cart</button>
+    </div>
+    
+
+    <script src="/src/index-script.js"></script>
+</body>
+</html>
