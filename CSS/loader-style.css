@@ -1,0 +1,9 @@
+.loader{
+    background: #000000 url(/images/lg.gif) no-repeat;
+    background-position: center center;
+    background-size: 15%;
+    width: 100%;
+    height: 100vh;
+    z-index: 20;
+    position: fixed;
+}

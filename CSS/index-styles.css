@@ -619,7 +619,7 @@ body{
 
 .left-options{
     position: absolute;
-    background-color:#feffffb9;
+    background-color:#feffff;
     width: 30%;
     height: 72.5%;
     top: 50px;
@@ -764,3 +764,31 @@ a{
     color: white;
 }
 
+.check_out{
+    margin: 20px;
+    border-radius: 5px;
+    width: 70%;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all;
+    transition-duration: 0.2s;
+}
+
+.check_out button{
+    background-color: transparent;
+    border: none;
+    font-size: large;
+    font-weight: bold;
+    transition: all;
+    transition-duration: 0.2s;
+}
+
+.check_out:hover{
+    background-color: #05b5fa;
+}
+
+.check_out:hover button{
+    color: white;
+}
