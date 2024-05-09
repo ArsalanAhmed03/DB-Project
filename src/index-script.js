@@ -187,7 +187,7 @@ function add_favourite(pID, emptyid, fullid){
     }
 }
 
-function deleteCart(pID){
+function deleteCart(pID,val){
     const productId = parseInt(pID);
         fetch('/removefromcart', {
             method: 'POST',
@@ -199,7 +199,12 @@ function deleteCart(pID){
         .then(response => {
             if (response.redirected) {
                 console.log('Product removed from cart!');
-                window.location.href = response.url;
+                if(val === 0){
+                    window.location.href = response.url;
+                }
+                else{
+                    window.location.href = '/CheckOut';
+                }
             } else {
                 console.error('Failed to remove from cart');
             }

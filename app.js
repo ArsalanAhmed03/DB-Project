@@ -47,19 +47,19 @@ app.get('/', async (req, res) => {
         const sectionProducts = [];
         const sectionCart = [];
         const categories = [
-            { name: 'All', query: 'SELECT * FROM Products LIMIT 4' },
-            { name: 'Best Sellers', query: 'SELECT * FROM Products ORDER BY totalsales LIMIT 4' },
-            { name: 'New Releases', query: 'SELECT * FROM Products ORDER BY EntryDate LIMIT 4' },
-            { name: 'Books', query: 'SELECT * FROM Products WHERE Category = "Books"' },
-            { name: 'Home Garden', query: 'SELECT * FROM Products WHERE Category = "Home Garden" LIMIT 4' },
-            { name: 'PC & Video Games', query: 'SELECT * FROM Products WHERE Category = "PC & Video Games" LIMIT 4' },
-            { name: 'PC', query: 'SELECT * FROM Products WHERE Category = "PC" LIMIT 4' },
-            { name: 'Electronics', query: 'SELECT * FROM Products WHERE Category = "Electronics" LIMIT 4' },
-            { name: 'Toys & Games', query: 'SELECT * FROM Products WHERE Category = "Toys & Games" LIMIT 4' },
-            { name: 'Beauty', query: 'SELECT * FROM Products WHERE Category = "Beauty" LIMIT 4' }
+            { name: 'All', query: 'SELECT * FROM Products WHERE QuantityAvailable > 0 LIMIT 4' },
+            { name: 'Best Sellers', query: 'SELECT * FROM Products WHERE QuantityAvailable > 0  ORDER BY totalsales LIMIT 4' },
+            { name: 'New Releases', query: 'SELECT * FROM Products WHERE QuantityAvailable > 0  ORDER BY EntryDate LIMIT 4' },
+            { name: 'Books', query: 'SELECT * FROM Products WHERE QuantityAvailable > 0 AND Category = "Books"' },
+            { name: 'Home Garden', query: 'SELECT * FROM Products WHERE QuantityAvailable > 0 AND  Category = "Home Garden" LIMIT 4' },
+            { name: 'PC & Video Games', query: 'SELECT * FROM Products WHERE QuantityAvailable > 0 AND  Category = "PC & Video Games" LIMIT 4' },
+            { name: 'PC', query: 'SELECT * FROM Products WHERE QuantityAvailable > 0 AND  Category = "PC" LIMIT 4' },
+            { name: 'Electronics', query: 'SELECT * FROM Products WHERE QuantityAvailable > 0 AND  Category = "Electronics" LIMIT 4' },
+            { name: 'Toys & Games', query: 'SELECT * FROM Products WHERE QuantityAvailable > 0 AND  Category = "Toys & Games" LIMIT 4' },
+            { name: 'Beauty', query: 'SELECT * FROM Products WHERE QuantityAvailable > 0 AND  Category = "Beauty" LIMIT 4' }
         ];
 
-        const get_cart = 'select P.product_img,P.ProductID,P.Name,P.Price,C.quantity,C.UserID from Cart as C Join Products as P ON C.ProductID = P.ProductID WHERE C.UserID = ?;';
+        const get_cart = 'select P.product_img,P.ProductID,P.Name,P.Price,C.quantity,C.UserID from Cart as C Join Products as P ON C.ProductID = P.ProductID WHERE QuantityAvailable > 0 AND C.UserID = ?;';
         const UserID = req.cookies.UserId;
         const [cart_items] = await mysql.promise().query(get_cart,[UserID]);
         sectionCart.push({cart_items:cart_items});
@@ -89,7 +89,7 @@ app.get('/search_item',(req,res)=>{
     if(req.cookies.filter_term && req.cookies.filter_term !== 'Best Match'){
         const filter = req.cookies.filter_term;
         res.clearCookie('filter_term');
-        let filter_query = 'select * from Products where Name LIKE ? OR short_Description LIKE ?';
+        let filter_query = 'select * from Products where QuantityAvailable > 0 AND Name LIKE ? OR short_Description LIKE ?';
         if(filter === 'Top Sales'){
             filter_query += ' ORDER BY totalsales';
         }
@@ -136,6 +136,26 @@ app.get('/search_item',(req,res)=>{
     }
 });
 
+app.get('/UpdateProduct',(req,res)=>{
+    const UID = req.cookies.UserId;
+    const loggedIn = req.cookies.SignedIn === 'true';
+    const isSeller = req.cookies.IS_SELLER === 'true';
+    
+    const search_query = 'select * from Products where SellerID = ?';
+    mysql.query(search_query,[UID],(err,all_products)=>{
+        if(err){
+            console.log(err);
+        }
+        else{
+            res.render('Inventory_Management', { 
+                loggedin: loggedIn ? 'true' : 'false', 
+                IS_SELLER: isSeller ? 'true' : 'false',
+                all_products:all_products
+            });
+        }
+    });
+    
+});
 
 app.get('/product_page',(req,res)=>{
     const loggedIn = req.cookies.SignedIn === 'true';
@@ -153,6 +173,41 @@ app.get('/product_page',(req,res)=>{
                 product:respon
             });
         }
+    });
+
+});
+
+app.get('/CheckOut', async (req,res)=>{
+    const loggedIn = req.cookies.SignedIn === 'true';
+    const isSeller = req.cookies.IS_SELLER === 'true';
+    const sectionCart = [];
+    const Payments = [];
+    const get_cart = 'select P.product_img,P.ProductID,P.Name,P.Price,C.quantity,C.UserID from Cart as C Join Products as P ON C.ProductID = P.ProductID WHERE C.UserID = ?;';
+    
+    const UserID = req.cookies.UserId;
+    const [cart_items] = await mysql.promise().query(get_cart,[UserID]);
+    sectionCart.push({cart_items:cart_items});
+
+    const get_payment_methods = 'select BankName,AccountNum from Payment_Methods where UserID = ?';
+    const [Pmethods] = await mysql.promise().query(get_payment_methods,[UserID]);
+    Payments.push({Pmethods:Pmethods});
+
+
+    res.render('CheckOut', { 
+        loggedin: loggedIn ? 'true' : 'false', 
+        IS_SELLER: isSeller ? 'true' : 'false',
+        sectionCart: sectionCart,
+        Payments:Payments
+    });
+
+});
+
+app.get('/Add_Payments', async (req,res)=>{
+    const loggedIn = req.cookies.SignedIn === 'true';
+    const isSeller = req.cookies.IS_SELLER === 'true';
+    res.render('Payments', { 
+        loggedin: loggedIn ? 'true' : 'false', 
+        IS_SELLER: isSeller ? 'true' : 'false'
     });
 
 });
@@ -199,7 +254,6 @@ app.get('/AddProduct',(req,res)=>{
 app.listen(port,()=>{
     console.log(`The server ${port} has been connected`);
 })
-
 
 app.post('/SignUpUN', (req, res) => {
     const name = req.body.UserName;
@@ -318,10 +372,11 @@ app.post('/SignInP', (req, res) => {
             res.cookie('UserId',UserID);
             res.cookie('SignedIn', 'true');
 
-            const check_seller = 'select * from Seller where UserID = (?)';
+            const check_seller = 'select SellerID from Seller where UserID = (?)';
             mysql.query(check_seller,[UserID], (err,found_seller)=>{
                 if(found_seller.length > 0){
                     res.cookie('IS_SELLER', 'true');
+                    res.cookie('SellerID', found_seller[0].SellerID);
                 }
                 else{
                     res.cookie('IS_SELLER', 'false');
@@ -422,6 +477,7 @@ app.post('/logout', (req,res)=>{
     res.cookie('SignedIn','false');
     res.cookie('IS_SELLER','false');
     res.clearCookie('UserId');
+    res.clearCookie('SellerID');
     res.redirect('/');
 });
 
@@ -443,7 +499,6 @@ app.post('/SellerSignUp',(req,res)=>{
                     res.redirect('/');
                 }
             });
-
 });
 
 app.post('/addproduct',upload.single('productimage'),(req,res)=>{
@@ -497,6 +552,8 @@ app.post('/gotohome',(req,res)=>{
     res.clearCookie('search_term');
     res.clearCookie('filter_term');
     res.clearCookie('AlldetailProduct');
+    res.clearCookie('PaymentSelected');
+    res.clearCookie('payOption');
     res.redirect('/');
 });
 
@@ -685,4 +742,92 @@ app.post('/view_details',(req,res)=>{
     res.redirect();
 });
 
+app.post('/add_payment',(req,res)=>{
+    const UID = parseInt(req.cookies.UserId);
+    const cnum = req.body.cardnumber;
+    const cvv = req.body.cvv; 
+    const ed = req.body.expirydate;
+    const cardname = req.body.cardholdername;
 
+    const insert_payment = 'INSERT INTO Payment_Methods (BankName, AccountNum, CNN, ExpiryDate, UserID) VALUES (?, ?, ?, ?, ?)';
+
+    mysql.query(insert_payment, [cardname, cnum, cvv, ed, UID], (err, ans) => {
+        if(err){
+            console.log("add_payment_error:", err);
+            res.status(500).send("Error adding payment."); 
+        }
+        else{
+            res.redirect("/"); 
+        }
+    });
+});
+
+app.post('/select_payment',(req,res)=>{
+    // res.cookie('UserId',UserID);
+    res.cookie('PaymentSelected','true');
+    res.cookie('payOption',req.body.option);
+    res.sendStatus(200);
+})
+
+app.post('/confirm_payment',(req,res)=>{
+    const UID = parseInt(req.cookies.UserId);
+    const subtotal = parseFloat(req.body.subtotal);
+    let PM = parseInt(req.cookies.payOption);
+    PM = (PM === 1) ? "Card" : "COD";
+    const insert_orders = 'INSERT INTO ConfirmOrders(UserID,DelieveryType,total) values(?,?,?)';
+
+    mysql.query(insert_orders,[UID,PM,subtotal],(err,output1)=>{
+        if(err){
+            console.log('err1');
+        }
+        else{
+            const get_last_ID = 'SELECT ConfirmID from ConfirmOrders where UserId = ? ORDER BY ConfirmID DESC Limit 1';
+            mysql.query(get_last_ID,[UID],(err2,last_inserted_ID)=>{
+                const LID = parseInt(last_inserted_ID[0].ConfirmID);
+                const get_cart = 'select C.CartID,C.quantity,C.ProductID from Cart as C WHERE C.UserID = ?;';
+                mysql.query(get_cart,[UID],(err3,result)=>{
+                    for(let i = 0; i < result.length; i++){
+                        const insert_confirm_P = 'INSERT INTO ConfirmOrder_P(ProductID,ConfirmID,quantity) values(?,?,?)';
+                        mysql.query(insert_confirm_P,[result[i].ProductID,LID,result[i].quantity],(err4,updaterespose)=>{
+                            const delete_from_cart = 'delete from Cart where CartID = ?';
+                            mysql.query(delete_from_cart,[result[i].CartID],(err6,delete_update)=>{
+                                if(err6){
+                                    console.log(err6);
+                                    res.sendStatus(500);
+                                }
+                            });
+                        });
+                        const reduce_inventory = 'update Products set totalsales = totalsales + ?, QuantityAvailable = QuantityAvailable - ? where ProductID = ?';
+                        mysql.query(reduce_inventory,[result[i].quantity,result[i].quantity,result[i].ProductID],(err4,updaterespose)=>{
+                            if(err4){
+                                console.log(err4);
+                            }
+                            else{
+                                console.log('All updated');
+                            }
+                        });
+                    }
+                    res.sendStatus(200);
+                });
+            });
+        }
+    })
+
+})
+
+app.post('/changequantity',(req,res)=>{
+    const new_quantity = req.body.newquantity;
+    const PID = req.body.productId;
+    console.log(new_quantity);
+    const change_quantity = 'update products set QuantityAvailable = ? where ProductID = ?;';
+
+    mysql.query(change_quantity,[new_quantity,PID],(err1,final)=>{
+        if(err1){
+            console.log(err1);
+        }
+        else{
+            console.log('value updated');
+        }
+    });
+
+});

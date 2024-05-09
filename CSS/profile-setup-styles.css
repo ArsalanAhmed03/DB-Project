@@ -327,4 +327,27 @@ input[type="search"] {
     transform: scale(1.02);
 }
 
+.Payment_button{
+    
+
+}
+
+.Payment_button button{
+    background-color: white;
+    border: none;
+    font: large;
+    font-weight: bold;
+    position: absolute;
+    top: 75%;
+    left: 7%;
+    width: 40%;
+    height: 30px;
+    border-radius: 10px;
+}
+
+.Payment_button button:hover{
+    background-color: #005bc2;
+    color: white;
+}
+
 

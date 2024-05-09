@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/CSS/CheckOut-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>CheckOut</title>
+</head>
+<body>
+
+    <div class="confirm_order" style="transform: translateX(-100%);">
+        Order Placed
+    </div>
+
+    <div class="page-header">
+        
+        <img id = "logo" src="/images/_51248235-4728-4a41-a966-d383c13ce461.png" alt="" width="111" height="110">
+        <form id = "link" method="post" action="/gotohome"><button type="submit"></button></form>
+
+        <form id = 'input-form' action="/filterItems" method="post">
+        <input id="searchInput" name="SearchTerm" type="text" placeholder="Search">
+
+        <div class="search-icon-div">
+            <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </div>
+        </form>
+
+
+        <% if (loggedin === 'false') { %>
+        <div class="login-div">
+            <button><a href="/login" target="_blank">Log In</a></button>
+        </div>
+        <div class="signup-div">
+            <button><a href="/SignUp">Sign Up</a></button>
+        </div>
+        <% } else { %>
+            <% if(IS_SELLER === 'false'){ %>
+            <div class="Seller-div">
+                <button><a href="/SellerSetup" target="_self">Become A Seller</a></button>
+            </div>
+            <%} else {%>
+                <div class="Seller-div">
+                    <button><a href="/addproduct" target="_self">Add Products</a></button>
+                </div>
+            <%}%>
+            <form action="/logout" method="post" class="logout-div">
+                <button type="submit">Log Out</button>
+            </form>
+            <button class="options" id = "profile">
+                <a href="/profile-setup"><i class="fa-regular fa-user"></i></a>
+            </button>
+        <% } %>  
+    </div>
+
+    <%subtotal = 0;%>
+    <%const renderCart = () => {%>
+        <%const products = sectionCart[0].cart_items;%>
+        <%for (let i = 0; i < products.length; i++) {%>
+            <%const product = products[i];%>
+            <%subtotal += parseFloat(product.Price) * product.quantity;%>
+            <div id="cart-items-div">
+                <img src="data:image/png;base64,<%= product.product_img %>" alt="product.Name" width="75" height="75">
+                <div class="cart-items-info">
+                    <div class="cart_name"><%=product.Name%></div> 
+                    <div class="cart_price">Price: <%=product.Price%></div>
+                    <div class="cart_quantity">Quantity: <%=product.quantity%></div>
+                </div>
+                <button id="delete_btn" onclick="deleteCart('<%=product.ProductID%>',1)"><i class="fa-solid fa-trash fa-lg"></i></button>
+            </div>
+        <%}%>
+    <%}%>
+
+    <%const renderPayments = () => {%>
+        <%const methods = Payments[0].Pmethods;%>
+        <%for (let i = 0; i < methods.length; i++) {%>
+            <%const method = methods[i];%>
+            <div class="method_box" onclick="selectOption(1)">
+                <h2>Card:</h2>
+                <h2>Account Name: <%=method.BankName%></h2>
+                <h4>Account Number: <%=method.AccountNum%></h4>
+            </div>
+        <%}%>
+
+    <%}%>
+
+
+    <div class="main">
+        <h1>Check Out</h1>
+        <div class="cart-item-div">
+            <%renderCart()%>
+        </div>
+        <%if(sectionCart[0].cart_items.length > 0){%>
+            <p class="subtotal">SubTotal:<%=subtotal%></p>
+        <h1>Select Payment Method</h1>
+        <div class="all_methods">
+            <%renderPayments();%>
+            <div class="COD" onclick="selectOption(2)">
+                <h1>CASH ON DELIVERY</h1>
+                <h4>Pay At Your Doorstep</h4>
+            </div>
+        </div>
+        <%const products = sectionCart[0].cart_items;%>
+        <button class="check_out" onclick="confirmpayment('<%=subtotal%>')">Order</button>
+        <%}%>
+
+    </div>
+
+    <script src="/src/index-script.js"></script>
+    <script>
+
+    function confirmpayment(subtotal){
+        fetch('/confirm_payment', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({subtotal:subtotal})
+        })
+        .then(response => {
+            if (response.ok) {
+                const confirm_page = document.querySelector('.confirm_order');
+                confirm_page.style.transform = "translateX(0%)";
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 1000);
+                
+            } else {
+                console.error('Order Fail');
+            }
+        })
+        .catch(error => {
+            console.error('Order Fail', error);
+        });
+        
+    }
+
+    function selectOption(option) {
+    console.log(option);
+    var selectedOption;
+    var nonselectedOption;
+    switch (option) {
+        case 1:
+            selectedOption = document.querySelector('.method_box');
+            nonselectedOption = document.querySelector('.COD');
+
+            break;
+        case 2:
+            selectedOption = document.querySelector('.COD');
+            nonselectedOption = document.querySelector('.method_box');
+
+            break;
+        default:
+            return;
+    }
+    selectedOption.style.backgroundColor = "#05b5fa";
+    selectedOption.style.color = "white";
+    nonselectedOption.style.backgroundColor = "white";
+    nonselectedOption.style.color = "black";
+    fetch('/select_payment', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ option: option })
+        })
+        .then(response => {
+            if (response.ok) {
+
+            } else {
+                console.error('Pay Option Fail');
+            }
+        })
+        .catch(error => {
+            console.error('Pay Option Fail', error);
+        });
+
+}
+
+    </script>
+
+</body>
+</html>

@@ -89,6 +89,7 @@
     <%const products = sectionProducts[sectionIndex].products;%>
     <%for (let i = 0; i < products.length; i++) {%>
         <%const product = products[i];%>
+        <%if(product.QuantityAvailable < 1){continue;}%>
         <div class="boxes" id="bx<%= i + 1 %>">
             <h1><%= product.Name %></h1>
             <img id="backdrop" src="data:image/png;base64,<%= product.product_img %>" alt="<%= product.Name %>" width="270" height="412">
@@ -210,10 +211,12 @@
 
     <div class="page-footer-back"></div>
 
+    <%subtotal = 0;%>
     <%const renderCart = () => {%>
         <%const products = sectionCart[0].cart_items;%>
         <%for (let i = 0; i < products.length; i++) {%>
             <%const product = products[i];%>
+            <%subtotal += parseFloat(product.Price) * product.quantity;%>
             <div id="cart-items-div">
                 <img src="data:image/png;base64,<%= product.product_img %>" alt="product.Name" width="75" height="75">
                 <div class="cart-items-info">
@@ -221,7 +224,7 @@
                     <div class="cart_price">Price: <%=product.Price%></div>
                     <div class="cart_quantity">Quantity: <%=product.quantity%></div>
                 </div>
-                <button id="delete_btn" onclick="deleteCart('<%=product.ProductID%>')"><i class="fa-solid fa-trash fa-lg"></i></button>
+                <button id="delete_btn" onclick="deleteCart('<%=product.ProductID%>',0)"><i class="fa-solid fa-trash fa-lg"></i></button>
             </div>
         <%}%>
     <%}%>>
@@ -234,7 +237,10 @@
         <div class="cart-item-div">
             <%renderCart()%>
         </div>
-        <a href="" class="check_out"><button>Check Out</button></a>
+        <%if(sectionCart[0].cart_items.length > 0){%>
+            <p class="subtotal" style="align-self: baseline; margin: 10px;">SubTotal:<%=subtotal%></p>
+        <a href="/CheckOut" class="check_out"><button>Check Out</button></a>
+        <%}%>
     </div>
     
 
