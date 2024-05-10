@@ -210,6 +210,36 @@ app.get('/CheckOut', async (req,res)=>{
 
 });
 
+app.get('/CheckOrders', async (req,res)=>{
+    const loggedIn = req.cookies.SignedIn === 'true';
+    const isSeller = req.cookies.IS_SELLER === 'true';
+    const Seller_ID = parseInt(req.cookies.SellerID);
+    
+    const getOrderIDs = 'select Distinct(ConfirmID) from ConfirmOrders as O JOIN Products as P where P.SellerID = ?';
+    const get_items = 'select O.ConfirmID,PP.ProductID,PP.Name,P.quantity,PP.Price,P.quantity*PP.Price as total from ConfirmOrders O JOIN ConfirmOrder_P as P ON O.ConfirmID = P.ConfirmID JOIN Products as PP ON PP.ProductID = P.ProductID WHERE SellerID = ? AND O.ConfirmID = ? ORDER BY O.ConfirmID'
+    const [IDS] = await mysql.promise().query(getOrderIDs,[Seller_ID]);
+    
+    // console.log(IDS.length);
+    const sectionOrders = [];
+
+
+    for(let i = 0; i < IDS.length;i++){
+        
+        const [items] = await mysql.promise().query(get_items,[Seller_ID,IDS[i].ConfirmID]);
+        sectionOrders.push({items:items});
+    }
+    console.log(sectionOrders.length);
+    console.log(sectionOrders[0].items[0]);
+
+
+    res.render('CheckOrders', { 
+        loggedin: loggedIn ? 'true' : 'false', 
+        IS_SELLER: isSeller ? 'true' : 'false',
+        sectionOrders: sectionOrders
+    });
+
+});
+
 app.get('/Add_Payments', async (req,res)=>{
     const loggedIn = req.cookies.SignedIn === 'true';
     const isSeller = req.cookies.IS_SELLER === 'true';
@@ -530,7 +560,6 @@ app.post('/addproduct',upload.single('productimage'),(req,res)=>{
     const product_long_description = req.body.productlongdescription;
     const product_category = req.body.productcategory;
     const product_quantity = req.body.productquantity;
-    console.log(product_image);
     const find_sellerID = 'select SellerID from Seller where UserId = (?)';
 
     mysql.query(find_sellerID,[UserID],(err,ID)=>{
