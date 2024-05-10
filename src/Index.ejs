@@ -40,7 +40,7 @@
 
         <% if (loggedin === 'false') { %>
         <div class="login-div">
-            <button><a href="/login" target="_blank">Log In</a></button>
+            <button><a href="/login" target="_self">Log In</a></button>
         </div>
         <div class="signup-div">
             <button><a href="/SignUp">Sign Up</a></button>
@@ -62,7 +62,10 @@
                 <a href="/profile-setup"><i class="fa-regular fa-user"></i></a>
             </button>
             <button class="options" id="Cart" onclick="hide_options()">
-                <i class="fa-solid fa-cart-shopping fa-lg"></i></a>
+                <i class="fa-solid fa-cart-shopping fa-lg"></i>
+            </button>
+            <button class="options" id="Favourites" onclick="hide_options1()">
+                <i class="fa-solid fa-star fa-lg"></i>
             </button>
         <% } %>  
         
@@ -242,6 +245,21 @@
         <a href="/CheckOut" class="check_out"><button>Check Out</button></a>
         <%}%>
     </div>
+
+    <div class="other-left-options" style="left: -30%">
+        <div class="cart-div">
+            <h1>Favourites</h1>
+        </div>
+        <div class="cart-item-div">
+            <%renderCart()%>
+        </div>
+        <%if(sectionCart[0].cart_items.length > 0){%>
+            <p class="subtotal" style="align-self: baseline; margin: 10px;">SubTotal:<%=subtotal%></p>
+        <a href="/CheckOut" class="check_out"><button>Check Out</button></a>
+        <%}%>
+    </div>
+
+
     
 
     <script src="/src/index-script.js"></script>

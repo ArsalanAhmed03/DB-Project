@@ -140,9 +140,10 @@ app.get('/UpdateProduct',(req,res)=>{
     const UID = req.cookies.UserId;
     const loggedIn = req.cookies.SignedIn === 'true';
     const isSeller = req.cookies.IS_SELLER === 'true';
+    const SID = req.cookies.SellerID;
     
     const search_query = 'select * from Products where SellerID = ?';
-    mysql.query(search_query,[UID],(err,all_products)=>{
+    mysql.query(search_query,[SID],(err,all_products)=>{
         if(err){
             console.log(err);
         }

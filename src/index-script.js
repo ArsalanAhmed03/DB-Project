@@ -87,6 +87,20 @@ function hide_options(){
 
 }
 
+function hide_options1(){
+    const a = document.querySelector('.other-left-options');
+    const logo = document.querySelector('#front-logo');
+    if(a.style.left === '-30%'){
+        a.style.left = '0%';
+        logo.style.transform = 'scale(1.2)';
+    }
+    else{
+        a.style.left = '-30%';
+        logo.style.transform = 'scale(1)';
+    }
+
+}
+
 function movecart(pID){
     const productId = pID;
     const cart = document.querySelector("#Cart");

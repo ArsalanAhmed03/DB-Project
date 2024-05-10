@@ -65,12 +65,16 @@ body{
     flex-direction: column;
 }
 
-#profile,#Cart{
+#profile,#Cart,#Favourites{
     background-color: transparent;
     border: none;
 }
 
-#Cart{
+#Favourites{
+    left: 5%;
+}
+
+#Cart,#Favourites{
     padding-top: 3px;
     transition: all;
     transition-duration: 1s;
@@ -88,7 +92,7 @@ body{
     right: 5%;
 }
 
-#profile:hover, #Cart:hover{
+#profile:hover, #Cart:hover,#Favourites:hover{
     background-color: #35353B;
     cursor: pointer;
 }
@@ -617,7 +621,7 @@ body{
 }
 
 
-.left-options{
+.left-options,.other-left-options{
     position: absolute;
     background-color:#feffff;
     width: 30%;
