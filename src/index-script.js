@@ -168,8 +168,8 @@ function add_favourite(pID, emptyid, fullid){
             body: JSON.stringify({ productId: productId })
         })
         .then(response => {
-            if (response.ok) {
-                console.log('Product added to favourite!');
+            if (response.ok || response.redirected) {
+                window.location.href = '/product_page';
             } else {
                 console.error('Failed to add product to favourite');
             }
@@ -190,7 +190,7 @@ function add_favourite(pID, emptyid, fullid){
         })
         .then(response => {
             if (response.ok) {
-                console.log('Product removed from favourite!');
+                window.location.href = '/product_page';
             } else {
                 console.error('Failed to remove product from favourite');
             }
@@ -214,7 +214,7 @@ function deleteCart(pID,val){
             if (response.redirected) {
                 console.log('Product removed from cart!');
                 if(val === 0){
-                    window.location.href = response.url;
+                    window.location.href = '/';
                 }
                 else{
                     window.location.href = '/CheckOut';
@@ -225,6 +225,29 @@ function deleteCart(pID,val){
         })
         .catch(error => {
             console.error('Error removing from cart:', error);
+        });
+}
+
+function deletefav(pID,val){
+    const productId = parseInt(pID);
+        fetch('/remove_favourite', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ productId: productId })
+        })
+        .then(response => {
+            console.log('aaa');
+            if(val === 0){
+                window.location.href = '/';
+            }
+            else{
+                window.location.href = '/CheckOut';
+            }
+        })
+        .catch(error => {
+            console.error('Error removing from Favourite:', error);
         });
 }
 

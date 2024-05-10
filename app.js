@@ -46,6 +46,8 @@ app.get('/', async (req, res) => {
 
         const sectionProducts = [];
         const sectionCart = [];
+        const sectionFavourite = [];
+
         const categories = [
             { name: 'All', query: 'SELECT * FROM Products WHERE QuantityAvailable > 0 LIMIT 4' },
             { name: 'Best Sellers', query: 'SELECT * FROM Products WHERE QuantityAvailable > 0  ORDER BY totalsales LIMIT 4' },
@@ -64,6 +66,10 @@ app.get('/', async (req, res) => {
         const [cart_items] = await mysql.promise().query(get_cart,[UserID]);
         sectionCart.push({cart_items:cart_items});
 
+        const get_fav = 'select Pro.ProductID,Pro.product_img,Pro.Name,Pro.Price from WishList_U as U Join WishList_P as P ON U.WishListID = P.WishListID JOIN Products as Pro ON P.ProductID = Pro.ProductID where U.UserID = ?';
+        const [fav_items] = await mysql.promise().query(get_fav,[UserID]);
+        sectionFavourite.push({fav_items:fav_items});
+
         for (const category of categories) {
             const [products] = await mysql.promise().query(category.query);
             sectionProducts.push({ section: category.name, products: products });
@@ -73,7 +79,8 @@ app.get('/', async (req, res) => {
             loggedin: loggedIn ? 'true' : 'false', 
             IS_SELLER: isSeller ? 'true' : 'false', 
             sectionProducts: sectionProducts,
-            sectionCart: sectionCart
+            sectionCart: sectionCart,
+            sectionFavourite: sectionFavourite
         });
     } catch (error) {
         console.error('Error retrieving products:', error);
@@ -613,6 +620,7 @@ app.post('/add_favourite', (req, res) => {
 
         if (wishListID) {
             checkAndInsertProduct(pID, wishListID);
+            
         } else {
             addNewUserAndProduct(UserID, pID);
         }
@@ -701,6 +709,9 @@ app.post('/remove_favourite', (req, res) => {
                     mysql.query(removeUser, [UserID], (err4, result) => {
                         if (err4) {
                             console.log("Error removing user from wishlist:", err4);
+                        }
+                        else{
+                            res.redirect('/');
                         }
                     });
                 }

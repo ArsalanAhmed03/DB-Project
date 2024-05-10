@@ -232,6 +232,21 @@
         <%}%>
     <%}%>>
 
+    <%const renderFav = () => {%>
+        <%const products = sectionFavourite[0].fav_items;%>
+        <%for (let i = 0; i < products.length; i++) {%>
+            <%const product = products[i];%>
+            <div id="cart-items-div">
+                <img src="data:image/png;base64,<%= product.product_img %>" alt="product.Name" width="75" height="75">
+                <div class="cart-items-info">
+                    <div class="cart_name"><%=product.Name%></div> 
+                    <div class="cart_price">Price: <%=product.Price%></div>
+                </div>
+                <button id="delete_btn_f" onclick="deletefav('<%=product.ProductID%>',0)"><i class="fa-solid fa-trash fa-lg"></i></button>
+            </div>
+        <%}%>
+    <%}%>>
+
     <div class="left-options" style="left: -30%">
         <div class="cart-div">
             <h1>Cart</h1>
@@ -251,16 +266,9 @@
             <h1>Favourites</h1>
         </div>
         <div class="cart-item-div">
-            <%renderCart()%>
+            <%renderFav()%>
         </div>
-        <%if(sectionCart[0].cart_items.length > 0){%>
-            <p class="subtotal" style="align-self: baseline; margin: 10px;">SubTotal:<%=subtotal%></p>
-        <a href="/CheckOut" class="check_out"><button>Check Out</button></a>
-        <%}%>
     </div>
-
-
-    
 
     <script src="/src/index-script.js"></script>
     <script src="/src/loader-script.js"></script>
